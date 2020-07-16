@@ -1,5 +1,3 @@
-//Package geo supports distance calculation between two positions on the Earth.
-//Positions can be provided in two froms: latitude/longitude or as Maidenhead QTH locator
 package geo
 
 import (
@@ -52,7 +50,8 @@ func QthEqual(a, b QTH) bool {
 
 const earthRadiusKm = 6371.0088 // mean Earth radius in km
 
-// returns distance between two Maindenhead locators in km
+// DistanceLocator returns distance between two Maidenhead locators in km
+// and any error encountered
 func DistanceLocator(locatorA string, locatorB string) (float64, error) {
 	a, err := NewQthFromLOC(locatorA)
 	b, err := NewQthFromLOC(locatorB)
@@ -64,7 +63,7 @@ func DistanceLocator(locatorA string, locatorB string) (float64, error) {
 	}
 }
 
-// returns Distance between two QTH variables in km
+// DistanceQTH returns distance between a and b in km and any error encountered
 func DistanceQTH(a, b QTH) float64 {
 	d := a.LatLng.Distance(b.LatLng)
 	return d.Radians() * earthRadiusKm
