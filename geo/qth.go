@@ -1,7 +1,6 @@
 package geo
 
 import (
-	"errors"
 	"fmt"
 	"github.com/golang/geo/s2"
 	"math"
@@ -15,67 +14,8 @@ type QTH struct {
 	LatLng s2.LatLng // LatLng represents a point on the unit sphere as a pair of angles.
 }
 
-func almostEqual(a, b float64) bool {
-	return math.Abs(a-b) < 0.00001
-}
-
-func (a QTH) String() string {
-	return fmt.Sprintf("[ %s %s {%.6f %.6f} ]", a.Loc, a.LatLon.String(), a.LatLng.Lat.Radians(), a.LatLng.Lng.Radians())
-}
-
-func QthEqual(a, b QTH) bool {
-	eq := a.Loc == b.Loc
-	if eq {
-		eq = almostEqual(a.LatLon.Lat, b.LatLon.Lat)
-	} else {
-		return false
-	}
-	if eq {
-		eq = almostEqual(a.LatLon.Lon, b.LatLon.Lon)
-	} else {
-		return false
-	}
-	if eq {
-		eq = almostEqual(a.LatLng.Lat.Radians(), b.LatLng.Lat.Radians())
-	} else {
-		return false
-	}
-	if eq {
-		eq = almostEqual(a.LatLng.Lng.Radians(), b.LatLng.Lng.Radians())
-	} else {
-		return false
-	}
-	return eq
-}
-
-const earthRadiusKm = 6371.0088 // mean Earth radius in km
-
-// DistanceLocator returns distance between two Maidenhead locators in km
-// and any error encountered
-func DistanceLocator(locatorA string, locatorB string) (float64, error) {
-	a, err := NewQthFromLOC(locatorA)
-	b, err := NewQthFromLOC(locatorB)
-	if err != nil {
-		return 0, err
-	} else {
-		d := a.LatLng.Distance(b.LatLng)
-		return d.Radians() * earthRadiusKm, nil
-	}
-}
-
-// DistanceQTH returns distance between a and b in km and any error encountered
-func DistanceQTH(a, b QTH) float64 {
-	d := a.LatLng.Distance(b.LatLng)
-	return d.Radians() * earthRadiusKm
-}
-
-func illegalArgumentError(arg string) error {
-	return errors.New(fmt.Sprintf("Illegal argumet value! qthLocator=%s", arg))
-}
-
-// This function creates new QTH variable from provided QTH locator
-// or returns error if QTH locator is wrong formatted
-func NewQthFromLOC(qthLocator string) (QTH, error) {
+// MakeQthFromLOC returns QTH for qthLocator
+func MakeQthFromLOC(qthLocator string) (QTH, error) {
 	qthLocator = strings.ToUpper(qthLocator)
 	qth := QTH{}
 	switch len(qthLocator) {
@@ -102,7 +42,7 @@ func NewQthFromLOC(qthLocator string) (QTH, error) {
 					LatLng: s2.LatLngFromDegrees(lat, lon),
 				}, nil
 			} else {
-				return qth, illegalArgumentError(qthLocator)
+				return qth, illegalLocatorError(qthLocator)
 			}
 		}
 	case 4:
@@ -124,7 +64,7 @@ func NewQthFromLOC(qthLocator string) (QTH, error) {
 					LatLng: s2.LatLngFromDegrees(lat, lon),
 				}, nil
 			} else {
-				return qth, illegalArgumentError(qthLocator)
+				return qth, illegalLocatorError(qthLocator)
 			}
 		}
 	case 2:
@@ -144,24 +84,23 @@ func NewQthFromLOC(qthLocator string) (QTH, error) {
 				}, nil
 
 			} else {
-				return qth, illegalArgumentError(qthLocator)
+				return qth, illegalLocatorError(qthLocator)
 			}
 		}
 
 	default:
-		return qth, illegalArgumentError(qthLocator)
+		return qth, illegalLocatorError(qthLocator)
 	}
 }
 
-// This function creates new QTH variable from provided latitude, longitude
-// or returns error if QTH locator is wrong formatted
-func NewQthFromLatLon(latitude, longitude float64) (QTH, error) {
+// MakeQthFromLatLon returns QTH for latitude, longitude
+func MakeQthFromLatLon(latitude, longitude float64) (QTH, error) {
 	lld := LatLonDeg{
 		Lat: latitude,
 		Lon: longitude,
 	}
 	if math.Abs(latitude) > 90 || math.Abs(longitude) > 180 {
-		return QTH{}, illegalArgumentError(lld.String())
+		return QTH{}, illegalLocatorError(lld.String())
 	}
 	f, s, ss := subsquareEncode(lld)
 	return QTH{
@@ -169,4 +108,8 @@ func NewQthFromLatLon(latitude, longitude float64) (QTH, error) {
 		LatLon: lld,
 		LatLng: s2.LatLngFromDegrees(latitude, longitude),
 	}, nil
+}
+
+func (a QTH) String() string {
+	return fmt.Sprintf("[ %s %s {%.6f %.6f} ]", a.Loc, a.LatLon.String(), a.LatLng.Lat.Radians(), a.LatLng.Lng.Radians())
 }

@@ -14,7 +14,6 @@ type LatLonDeg struct {
 }
 
 func (a *LatLonDeg) String() string {
-	//	return fmt.Sprintf("Lat=%.4f, Lon=%.4f", a.Lat, a.Lon)
 	return fmt.Sprintf("{%.6f %.6f}", a.Lat, a.Lon)
 }
 

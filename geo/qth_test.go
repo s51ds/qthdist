@@ -1,10 +1,40 @@
 package geo
 
 import (
+	"math"
 	"testing"
 
 	"github.com/golang/geo/s2"
 )
+
+func almostEqual(a, b float64) bool {
+	return math.Abs(a-b) < 0.00001
+}
+
+func qthEqual(a, b QTH) bool {
+	eq := a.Loc == b.Loc
+	if eq {
+		eq = almostEqual(a.LatLon.Lat, b.LatLon.Lat)
+	} else {
+		return false
+	}
+	if eq {
+		eq = almostEqual(a.LatLon.Lon, b.LatLon.Lon)
+	} else {
+		return false
+	}
+	if eq {
+		eq = almostEqual(a.LatLng.Lat.Radians(), b.LatLng.Lat.Radians())
+	} else {
+		return false
+	}
+	if eq {
+		eq = almostEqual(a.LatLng.Lng.Radians(), b.LatLng.Lng.Radians())
+	} else {
+		return false
+	}
+	return eq
+}
 
 func TestNewQthFromLOC_01(t *testing.T) {
 	type args struct {
@@ -280,13 +310,13 @@ func TestNewQthFromLOC_01(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := NewQthFromLOC(tt.args.qthLocator)
+			got, err := MakeQthFromLOC(tt.args.qthLocator)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("NewQthFromLOC() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("MakeQthFromLOC() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !QthEqual(got, tt.want) {
-				t.Errorf("NewQthFromLOC() = %s, want %s", got.String(), tt.want.String())
+			if !qthEqual(got, tt.want) {
+				t.Errorf("MakeQthFromLOC() = %s, want %s", got.String(), tt.want.String())
 			}
 		})
 	}
@@ -444,67 +474,14 @@ func TestNewQthFromLatLon(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := NewQthFromLatLon(tt.args.latitude, tt.args.longitude)
+			got, err := MakeQthFromLatLon(tt.args.latitude, tt.args.longitude)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("NewQthFromLatLon() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("MakeQthFromLatLon() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !QthEqual(got, tt.want) {
-				t.Errorf("NewQthFromLOC() = %s, want %s", got.String(), tt.want.String())
-				//				t.Errorf("NewQthFromLatLon() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func TestDistance(t *testing.T) {
-	type args struct {
-		locatorA string
-		locatorB string
-	}
-	tests := []struct {
-		name    string
-		args    args
-		want    float64
-		wantErr bool
-	}{
-		{
-			name: "S59ABC-ZM4T",
-			args: args{
-				locatorA: "JN76TO",
-				locatorB: "RF80LQ",
-			},
-			want:    18299.250785366803,
-			wantErr: false,
-		},
-		{
-			name: "North-South-Pole",
-			args: args{
-				locatorA: "AR09AX",
-				locatorB: "AA00AA",
-			},
-			want:    20010.481313695705,
-			wantErr: false,
-		},
-		{
-			name: "S59ABC-S57M",
-			args: args{
-				locatorA: "jn76to",
-				locatorB: "jn76po",
-			},
-			want:    25.464939494933233,
-			wantErr: false,
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			got, err := DistanceLocator(tt.args.locatorA, tt.args.locatorB)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("DistanceLocator() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
-			if got != tt.want {
-				t.Errorf("DistanceLocator() = %v, want %v", got, tt.want)
+			if !qthEqual(got, tt.want) {
+				t.Errorf("MakeQthFromLOC() = %s, want %s", got.String(), tt.want.String())
+				//				t.Errorf("MakeQthFromLatLon() = %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -541,14 +518,14 @@ func TestNewQthFromLOC(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := NewQthFromLOC(tt.args.qthLocator)
+			got, err := MakeQthFromLOC(tt.args.qthLocator)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("NewQthFromLOC() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("MakeQthFromLOC() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !QthEqual(got, tt.want) {
-				t.Errorf("NewQthFromLOC() = %s, want %s", got.String(), tt.want.String())
-				//				t.Errorf("NewQthFromLOC() = %v, want %v", got, tt.want)
+			if !qthEqual(got, tt.want) {
+				t.Errorf("MakeQthFromLOC() = %s, want %s", got.String(), tt.want.String())
+				//				t.Errorf("MakeQthFromLOC() = %v, want %v", got, tt.want)
 			}
 		})
 	}
