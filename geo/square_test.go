@@ -26,7 +26,7 @@ import (
 //	_, sa := squareEncode(lld)
 //	fmt.Println("sa")
 //	fmt.Println(sa.String())
-//	if s.Equals(sa) {
+//	if s.equals(sa) {
 //		t.Fatal()
 //	}
 //}
@@ -119,7 +119,7 @@ func TestSquare_Equals(t *testing.T) {
 		want   bool
 	}{
 		{
-			name: "Equals-1",
+			name: "equals-1",
 			fields: fields{
 				decoded: LatLonDeg{
 					Lat: 0,
@@ -145,7 +145,7 @@ func TestSquare_Equals(t *testing.T) {
 			want: true,
 		},
 		{
-			name: "Equals-2",
+			name: "equals-2",
 			fields: fields{
 				decoded: LatLonDeg{
 					Lat: 1,
@@ -171,7 +171,7 @@ func TestSquare_Equals(t *testing.T) {
 			want: false,
 		},
 		{
-			name: "Equals-3",
+			name: "equals-3",
 			fields: fields{
 				decoded: LatLonDeg{
 					Lat: 1,
@@ -198,7 +198,7 @@ func TestSquare_Equals(t *testing.T) {
 		},
 
 		{
-			name: "Equals-4",
+			name: "equals-4",
 			fields: fields{
 				decoded: LatLonDeg{
 					Lat: 1,
@@ -230,8 +230,8 @@ func TestSquare_Equals(t *testing.T) {
 				decoded: tt.fields.decoded,
 				encoded: tt.fields.encoded,
 			}
-			if got := a.Equals(tt.args.b); got != tt.want {
-				t.Errorf("square.Equals() = %v, want %v", got, tt.want)
+			if got := a.equals(tt.args.b); got != tt.want {
+				t.Errorf("square.equals() = %v, want %v", got, tt.want)
 			}
 		})
 	}

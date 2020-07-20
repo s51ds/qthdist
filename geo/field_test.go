@@ -73,7 +73,7 @@ func TestField_Equals(t *testing.T) {
 				encoded: tt.fields.encoded,
 			}
 			if got := a.Equals(tt.args.b); got != tt.want {
-				t.Errorf("field.Equals() = %v, want %v", got, tt.want)
+				t.Errorf("field.equals() = %v, want %v", got, tt.want)
 			}
 		})
 	}
