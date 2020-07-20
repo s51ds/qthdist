@@ -9,19 +9,19 @@ import (
 func TestLatLon_Equal(t *testing.T) {
 	a := LatLonDeg{}
 	b := LatLonDeg{}
-	if !a.Equal(b) {
+	if !a.equal(b) {
 		t.Fatal()
 	}
 	//
 	a.Lon = 1.1
 	a.Lat = 2.2
-	if a.Equal(b) {
+	if a.equal(b) {
 		t.Fatal()
 	}
 	//
 	b.Lon = 1.1
 	b.Lat = 2.2
-	if !a.Equal(b) {
+	if !a.equal(b) {
 		t.Fatal()
 	}
 }
@@ -67,18 +67,18 @@ func TestLatLonChar_LatLonChar(t *testing.T) {
 
 func TestLatLonChar_Equal(t *testing.T) {
 	a := latLonChar{}
-	if !a.Equal(a) {
+	if !a.equal(a) {
 		t.Fatal()
 	}
 	b := latLonChar{}
 	b.setLatChar("J")
 	b.setLonChar("N")
-	if a.Equal(b) {
+	if a.equal(b) {
 		t.Fatal()
 	}
 	a.setLatChar("J")
 	a.setLonChar("N")
-	if !a.Equal(b) {
+	if !a.equal(b) {
 		t.Fatal()
 	}
 

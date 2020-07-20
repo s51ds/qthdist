@@ -5,6 +5,10 @@ import (
 	"testing"
 )
 
+func (a *field) equals(b field) bool {
+	return a.encoded.equal(b.encoded) && a.decoded.equal(b.decoded)
+}
+
 func TestField_String(t *testing.T) {
 	type fields struct {
 		decoded LatLonDeg
@@ -72,7 +76,7 @@ func TestField_Equals(t *testing.T) {
 				decoded: tt.fields.decoded,
 				encoded: tt.fields.encoded,
 			}
-			if got := a.Equals(tt.args.b); got != tt.want {
+			if got := a.equals(tt.args.b); got != tt.want {
 				t.Errorf("field.equals() = %v, want %v", got, tt.want)
 			}
 		})

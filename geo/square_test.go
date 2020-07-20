@@ -5,6 +5,10 @@ import (
 	"testing"
 )
 
+func (a *square) equals(b square) bool {
+	return a.encoded.equal(b.encoded) && a.decoded.equal(b.decoded)
+}
+
 //func TestSquare_Decode_01(t *testing.T) {
 //	fc := latLonChar{}
 //	fc.setLonChar("J")

@@ -17,7 +17,7 @@ func (a *LatLonDeg) String() string {
 	return fmt.Sprintf("{%.6f %.6f}", a.Lat, a.Lon)
 }
 
-func (a *LatLonDeg) Equal(b LatLonDeg) bool {
+func (a *LatLonDeg) equal(b LatLonDeg) bool {
 	return a.String() == b.String()
 }
 
@@ -120,6 +120,6 @@ func (a *latLonChar) String() string {
 	}
 }
 
-func (a *latLonChar) Equal(b latLonChar) bool {
+func (a *latLonChar) equal(b latLonChar) bool {
 	return a.String() == b.String()
 }

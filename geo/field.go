@@ -4,36 +4,14 @@ import (
 	"fmt"
 )
 
-type field struct {
-	// characters {A,B,...R} decoded as
-	// longitude {-180,-160...,160}
-	// latitude {-90,-80...,80)
-	decoded LatLonDeg  //characters decoded as longitude and latitude
-	encoded latLonChar //latitude and longitude encoded as characters
-}
+var (
+	fieldDigitToLetterLat map[int]string
+	fieldDigitToLetterLon map[int]string
 
-func (a *field) String() string {
-	s := ""
-	if a.decoded.String() != "" {
-		s = fmt.Sprintf("Decoded:%s", a.decoded.String())
-	}
-	if a.encoded.String() != "" {
-		if s == "" {
-			s = fmt.Sprintf("Encoded:%s", a.encoded.String())
-		} else {
-			s += fmt.Sprintf(" Encoded:%s", a.encoded.String())
-		}
-	}
-	return s
-}
+	fieldLetterToDigitLat map[string]float64
+	fieldLetterToDigitLon map[string]float64
 
-func (a *field) Equals(b field) bool {
-	return a.encoded.Equal(b.encoded) && a.decoded.Equal(b.decoded)
-}
-
-func fieldEncode(lld LatLonDeg) field {
-
-	aLat := [...]float64{
+	fieldDegLatitudes = [...]float64{
 		-90,
 		-80,
 		-70,
@@ -53,7 +31,30 @@ func fieldEncode(lld LatLonDeg) field {
 		70,
 		80,
 	}
-	mLat := map[int]string{
+	fieldDegLongitudes = [...]float64{
+		-180,
+		-160,
+		-140,
+		-120,
+		-100,
+		-80,
+		-60,
+		-40,
+		-20,
+		0,
+		20,
+		40,
+		60,
+		80,
+		100,
+		120,
+		140,
+		160,
+	}
+)
+
+func init() {
+	fieldDigitToLetterLat = map[int]string{
 		-90: "A",
 		-80: "B",
 		-70: "C",
@@ -74,27 +75,7 @@ func fieldEncode(lld LatLonDeg) field {
 		80:  "R",
 	}
 
-	aLon := [...]float64{
-		-180,
-		-160,
-		-140,
-		-120,
-		-100,
-		-80,
-		-60,
-		-40,
-		-20,
-		0,
-		20,
-		40,
-		60,
-		80,
-		100,
-		120,
-		140,
-		160,
-	}
-	mLon := map[int]string{
+	fieldDigitToLetterLon = map[int]string{
 		-180: "A",
 		-170: "A",
 		-160: "B",
@@ -133,34 +114,7 @@ func fieldEncode(lld LatLonDeg) field {
 		170:  "R",
 	}
 
-	a := field{}
-
-	iLat, iLon := 0, 0
-	for _, v := range aLon {
-		if lld.Lon >= v && lld.Lon < v+20 {
-			iLon = int(v)
-			//fmt.Printf("lld.Lon=%f iLon=%d \n", lld.Lon, iLon)
-			break
-		}
-	}
-	for _, v := range aLat {
-		if lld.Lat >= v && lld.Lat < v+10 {
-			iLat = int(v)
-			//fmt.Printf("lld.Lat=%f iLat=%d \n", lld.Lat, iLat)
-			break
-		}
-	}
-
-	a.encoded.setLatChar(mLat[iLat])
-	a.encoded.setLonChar(mLon[iLon])
-	a.decoded.Lat = float64(iLat)
-	a.decoded.Lon = float64(iLon)
-	return a
-}
-
-func fieldDecode(llc latLonChar) field {
-	a := field{}
-	mLat := map[string]float64{
+	fieldLetterToDigitLat = map[string]float64{
 		"A": -90,
 		"B": -80,
 		"C": -70,
@@ -180,7 +134,8 @@ func fieldDecode(llc latLonChar) field {
 		"Q": 70,
 		"R": 80,
 	}
-	mLon := map[string]float64{
+
+	fieldLetterToDigitLon = map[string]float64{
 		"A": -180,
 		"B": -160,
 		"C": -140,
@@ -200,8 +155,59 @@ func fieldDecode(llc latLonChar) field {
 		"Q": 140,
 		"R": 160,
 	}
-	a.decoded.Lat = mLat[llc.getLatChar()]
-	a.decoded.Lon = mLon[llc.getLonChar()]
+}
+
+type field struct {
+	// characters {A,B,...R} decoded as
+	// longitude {-180,-160...,160}
+	// latitude {-90,-80...,80)
+	decoded LatLonDeg  //characters decoded as longitude and latitude
+	encoded latLonChar //latitude and longitude encoded as characters
+}
+
+func (a *field) String() string {
+	s := ""
+	if a.decoded.String() != "" {
+		s = fmt.Sprintf("Decoded:%s", a.decoded.String())
+	}
+	if a.encoded.String() != "" {
+		if s == "" {
+			s = fmt.Sprintf("Encoded:%s", a.encoded.String())
+		} else {
+			s += fmt.Sprintf(" Encoded:%s", a.encoded.String())
+		}
+	}
+	return s
+}
+
+func fieldEncode(lld LatLonDeg) field {
+	a := field{}
+
+	iLat, iLon := 0, 0
+	for _, v := range fieldDegLongitudes {
+		if lld.Lon >= v && lld.Lon < v+20 {
+			iLon = int(v)
+			break
+		}
+	}
+	for _, v := range fieldDegLatitudes {
+		if lld.Lat >= v && lld.Lat < v+10 {
+			iLat = int(v)
+			break
+		}
+	}
+
+	a.encoded.setLatChar(fieldDigitToLetterLat[iLat])
+	a.encoded.setLonChar(fieldDigitToLetterLon[iLon])
+	a.decoded.Lat = float64(iLat)
+	a.decoded.Lon = float64(iLon)
+	return a
+}
+
+func fieldDecode(llc latLonChar) field {
+	a := field{}
+	a.decoded.Lat = fieldLetterToDigitLat[llc.getLatChar()]
+	a.decoded.Lon = fieldLetterToDigitLon[llc.getLonChar()]
 	a.encoded = llc
 	return a
 }

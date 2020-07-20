@@ -124,10 +124,6 @@ func (a *square) String() string {
 	return s
 }
 
-func (a *square) equals(b square) bool {
-	return a.encoded.Equal(b.encoded) && a.decoded.Equal(b.decoded)
-}
-
 func squareEncode(lld LatLonDeg) (field, square) {
 
 	s := square{}

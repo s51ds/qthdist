@@ -29,7 +29,7 @@ func (a *subsquare) String() string {
 }
 
 func (a *subsquare) Equals(b square) bool {
-	return a.encoded.Equal(b.encoded) && a.decoded.Equal(b.decoded)
+	return a.encoded.equal(b.encoded) && a.decoded.equal(b.decoded)
 }
 
 func subsquareEncode(lld LatLonDeg) (field, square, subsquare) {
