@@ -123,6 +123,9 @@ func TestDistanceQTH(t *testing.T) {
 func TestQTH_Distance(t *testing.T) {
 	jn76to, _ := MakeQthFromLOC("JN76TO")
 	aa00aa, _ := MakeQthFromLOC("AA00AA")
+	JN94FQ, _ := MakeQthFromLOC("JN94FQ")
+	KN22XS, _ := MakeQthFromLOC("KN22XS")
+	JN76TM, _ := MakeQthFromLOC("JN76TM")
 
 	tests := []struct {
 		name string
@@ -131,16 +134,34 @@ func TestQTH_Distance(t *testing.T) {
 		want float64
 	}{
 		{
-			name: "",
+			name: "jn76to",
 			a:    &jn76to,
 			b:    &jn76to,
 			want: 0,
 		},
 		{
-			name: "",
+			name: "aa00aa",
 			a:    &aa00aa,
 			b:    &aa00aa,
 			want: 0,
+		},
+		{
+			name: "E74G",
+			a:    &jn76to,
+			b:    &JN94FQ,
+			want: 306.4447689992149,
+		},
+		{
+			name: "LZ9X",
+			a:    &jn76to,
+			b:    &KN22XS,
+			want: 920.3974068704536,
+		},
+		{
+			name: "S52ME",
+			a:    &jn76to,
+			b:    &JN76TM,
+			want: 9.266256686128344,
 		},
 	}
 	for _, tt := range tests {
