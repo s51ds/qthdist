@@ -1,4 +1,4 @@
-package geo
+package internal
 
 import (
 	"fmt"
@@ -97,52 +97,52 @@ func init() {
 
 }
 
-type subsquare struct {
-	// characters {A,B,...,X} decoded as
+type Subsquare struct {
+	// characters {A,B,...,X} Decoded as
 	// longitude {0,5,10...,55} [minute]
 	// latitude {0.0, 2.5, 5.0,..., 110, 115)  [minute]
-	decoded LatLonDeg  //characters decoded as longitude and latitude
-	encoded latLonChar //latitude and longitude encoded as characters
+	Decoded LatLonDeg  //characters Decoded as longitude and latitude
+	Encoded LatLonChar //latitude and longitude Encoded as characters
 }
 
-func (a *subsquare) String() string {
+func (a *Subsquare) String() string {
 	s := ""
-	if a.decoded.String() != "" {
-		s = fmt.Sprintf("Decoded:%s", a.decoded.String())
+	if a.Decoded.String() != "" {
+		s = fmt.Sprintf("Decoded:%s", a.Decoded.String())
 	}
-	if a.encoded.String() != "" {
+	if a.Encoded.String() != "" {
 		if s == "" {
-			s = fmt.Sprintf("Encoded:%s", a.encoded.String())
+			s = fmt.Sprintf("Encoded:%s", a.Encoded.String())
 		} else {
-			s += fmt.Sprintf(" Encoded:%s", a.encoded.String())
+			s += fmt.Sprintf(" Encoded:%s", a.Encoded.String())
 		}
 	}
 	return s
 }
 
-func (a *subsquare) Equals(b square) bool {
-	return a.encoded.equal(b.encoded) && a.decoded.equal(b.decoded)
+func (a *Subsquare) Equals(b Square) bool {
+	return a.Encoded.equal(b.Encoded) && a.Decoded.equal(b.Decoded)
 }
 
-func subsquareEncode(lld LatLonDeg) (field, square, subsquare) {
-	fld, sqr := squareEncode(lld)
-	subsqr := subsquare{}
+func SubsquareEncode(lld LatLonDeg) (Field, Square, Subsquare) {
+	fld, sqr := SquareEncode(lld)
+	subsqr := Subsquare{}
 
-	latMinutes := math.Abs(fld.decoded.Lat+sqr.decoded.Lat-lld.Lat) * 60
-	lonMinutes := math.Abs(fld.decoded.Lon+sqr.decoded.Lon-lld.Lon) * 60
+	latMinutes := math.Abs(fld.Decoded.Lat+sqr.Decoded.Lat-lld.Lat) * 60
+	lonMinutes := math.Abs(fld.Decoded.Lon+sqr.Decoded.Lon-lld.Lon) * 60
 
 	for i, v := range subsquareMinuteLatitudes {
 		if latMinutes >= v && latMinutes < v+2.5 {
-			subsqr.encoded.latChar = byte(subsquareLetters[i][0])
-			subsqr.decoded.Lat = v
+			subsqr.Encoded.LatChar = byte(subsquareLetters[i][0])
+			subsqr.Decoded.Lat = v
 			break
 		}
 	}
 
 	for i, v := range subsquereMinuteLongitudesLon {
 		if lonMinutes >= v && lonMinutes < v+5 {
-			subsqr.encoded.lonChar = byte(subsquareLetters[i][0])
-			subsqr.decoded.Lon = v
+			subsqr.Encoded.LonChar = byte(subsquareLetters[i][0])
+			subsqr.Decoded.Lon = v
 			break
 		}
 	}
@@ -150,10 +150,10 @@ func subsquareEncode(lld LatLonDeg) (field, square, subsquare) {
 	return fld, sqr, subsqr
 }
 
-func subsquareDecode(llc latLonChar) subsquare {
-	s := subsquare{}
-	s.decoded.Lat = subsquereLetterToDigitLat[llc.getLatChar()]
-	s.decoded.Lon = subsquereLetterToDigitLon[llc.getLonChar()]
-	s.encoded = llc
+func SubsquareDecode(llc LatLonChar) Subsquare {
+	s := Subsquare{}
+	s.Decoded.Lat = subsquereLetterToDigitLat[llc.GetLatChar()]
+	s.Decoded.Lon = subsquereLetterToDigitLon[llc.GetLonChar()]
+	s.Encoded = llc
 	return s
 }

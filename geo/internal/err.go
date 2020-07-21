@@ -1,10 +1,10 @@
-package geo
+package internal
 
 import (
 	"errors"
 	"fmt"
 )
 
-func illegalLocatorError(arg string) error {
+func IllegalLocatorError(arg string) error {
 	return errors.New(fmt.Sprintf("Illegal argumet value! qthLocator=%s", arg))
 }

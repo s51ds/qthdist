@@ -2,6 +2,7 @@ package geo
 
 import (
 	"math"
+	"qth/geo/internal"
 	"testing"
 
 	"github.com/golang/geo/s2"
@@ -53,7 +54,7 @@ func TestNewQthFromLOC_01(t *testing.T) {
 			},
 			want: QTH{
 				Loc: "",
-				LatLon: LatLonDeg{
+				LatLon: internal.LatLonDeg{
 					Lat: 0,
 					Lon: 0,
 				},
@@ -71,7 +72,7 @@ func TestNewQthFromLOC_01(t *testing.T) {
 			},
 			want: QTH{
 				Loc: "",
-				LatLon: LatLonDeg{
+				LatLon: internal.LatLonDeg{
 					Lat: 0,
 					Lon: 0,
 				},
@@ -89,7 +90,7 @@ func TestNewQthFromLOC_01(t *testing.T) {
 			},
 			want: QTH{
 				Loc: "",
-				LatLon: LatLonDeg{
+				LatLon: internal.LatLonDeg{
 					Lat: 0,
 					Lon: 0,
 				},
@@ -107,7 +108,7 @@ func TestNewQthFromLOC_01(t *testing.T) {
 			},
 			want: QTH{
 				Loc: "",
-				LatLon: LatLonDeg{
+				LatLon: internal.LatLonDeg{
 					Lat: 0,
 					Lon: 0,
 				},
@@ -126,7 +127,7 @@ func TestNewQthFromLOC_01(t *testing.T) {
 			},
 			want: QTH{
 				Loc: "",
-				LatLon: LatLonDeg{
+				LatLon: internal.LatLonDeg{
 					Lat: 0,
 					Lon: 0,
 				},
@@ -145,7 +146,7 @@ func TestNewQthFromLOC_01(t *testing.T) {
 			},
 			want: QTH{
 				Loc: "JN",
-				LatLon: LatLonDeg{
+				LatLon: internal.LatLonDeg{
 					Lat: 45,
 					Lon: 10,
 				},
@@ -164,7 +165,7 @@ func TestNewQthFromLOC_01(t *testing.T) {
 			},
 			want: QTH{
 				Loc: "",
-				LatLon: LatLonDeg{
+				LatLon: internal.LatLonDeg{
 					Lat: 0,
 					Lon: 0,
 				},
@@ -183,7 +184,7 @@ func TestNewQthFromLOC_01(t *testing.T) {
 			},
 			want: QTH{
 				Loc: "JN76",
-				LatLon: LatLonDeg{
+				LatLon: internal.LatLonDeg{
 					Lat: 46.5,
 					Lon: 15,
 				},
@@ -202,7 +203,7 @@ func TestNewQthFromLOC_01(t *testing.T) {
 			},
 			want: QTH{
 				Loc: "",
-				LatLon: LatLonDeg{
+				LatLon: internal.LatLonDeg{
 					Lat: 0,
 					Lon: 0,
 				},
@@ -221,7 +222,7 @@ func TestNewQthFromLOC_01(t *testing.T) {
 			},
 			want: QTH{
 				Loc: "JN76TO",
-				LatLon: LatLonDeg{
+				LatLon: internal.LatLonDeg{
 					Lat: 46.60416666333334,
 					Lon: 15.625000003333334,
 				},
@@ -240,7 +241,7 @@ func TestNewQthFromLOC_01(t *testing.T) {
 			},
 			want: QTH{
 				Loc: "FN32LL",
-				LatLon: LatLonDeg{
+				LatLon: internal.LatLonDeg{
 					Lat: 42.47916666333334,
 					Lon: -73.04166666333333,
 				},
@@ -259,7 +260,7 @@ func TestNewQthFromLOC_01(t *testing.T) {
 			},
 			want: QTH{
 				Loc: "GG58WG",
-				LatLon: LatLonDeg{
+				LatLon: internal.LatLonDeg{
 					Lat: -21.72916667,
 					Lon: -48.124999996666666,
 				},
@@ -278,7 +279,7 @@ func TestNewQthFromLOC_01(t *testing.T) {
 			},
 			want: QTH{
 				Loc: "RF80LQ",
-				LatLon: LatLonDeg{
+				LatLon: internal.LatLonDeg{
 					Lat: -39.312500003333334,
 					Lon: 176.95833333666667,
 				},
@@ -296,7 +297,7 @@ func TestNewQthFromLOC_01(t *testing.T) {
 			},
 			want: QTH{
 				Loc: "FN42ET",
-				LatLon: LatLonDeg{
+				LatLon: internal.LatLonDeg{
 					Lat: 42.812499996666666,
 					Lon: -71.62499999666667,
 				},
@@ -341,7 +342,7 @@ func TestNewQthFromLatLon(t *testing.T) {
 			},
 			want: QTH{
 				Loc: "JN76TO",
-				LatLon: LatLonDeg{
+				LatLon: internal.LatLonDeg{
 					Lat: 46.60416666333334,
 					Lon: 15.625000003333334,
 				},
@@ -360,7 +361,7 @@ func TestNewQthFromLatLon(t *testing.T) {
 			},
 			want: QTH{
 				Loc: "FN32LL",
-				LatLon: LatLonDeg{
+				LatLon: internal.LatLonDeg{
 					Lat: 42.47916666333334,
 					Lon: -73.04166666333333,
 				},
@@ -380,7 +381,7 @@ func TestNewQthFromLatLon(t *testing.T) {
 			},
 			want: QTH{
 				Loc: "GG58WG",
-				LatLon: LatLonDeg{
+				LatLon: internal.LatLonDeg{
 					Lat: -21.72916667,
 					Lon: -48.124999996666666,
 				},
@@ -400,7 +401,7 @@ func TestNewQthFromLatLon(t *testing.T) {
 			},
 			want: QTH{
 				Loc: "RF80LQ",
-				LatLon: LatLonDeg{
+				LatLon: internal.LatLonDeg{
 					Lat: -39.312500003333334,
 					Lon: 176.95833333666667,
 				},
@@ -420,7 +421,7 @@ func TestNewQthFromLatLon(t *testing.T) {
 			},
 			want: QTH{
 				Loc: "",
-				LatLon: LatLonDeg{
+				LatLon: internal.LatLonDeg{
 					Lat: 0,
 					Lon: 0,
 				},
@@ -440,7 +441,7 @@ func TestNewQthFromLatLon(t *testing.T) {
 			},
 			want: QTH{
 				Loc: "AR09AX",
-				LatLon: LatLonDeg{
+				LatLon: internal.LatLonDeg{
 					Lat: 89.99999999999999,
 					Lon: -180,
 				},
@@ -460,7 +461,7 @@ func TestNewQthFromLatLon(t *testing.T) {
 			},
 			want: QTH{
 				Loc: "AA00AA",
-				LatLon: LatLonDeg{
+				LatLon: internal.LatLonDeg{
 					Lat: -90,
 					Lon: -180,
 				},
@@ -504,7 +505,7 @@ func TestNewQthFromLOC(t *testing.T) {
 			},
 			want: QTH{
 				Loc: "FN42ET",
-				LatLon: LatLonDeg{
+				LatLon: internal.LatLonDeg{
 					Lat: 42.812499996666666,
 					Lon: -71.62499999666667,
 				},

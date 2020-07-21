@@ -1,33 +1,33 @@
-package geo
+package internal
 
 import (
 	"reflect"
 	"testing"
 )
 
-func (a *square) equals(b square) bool {
-	return a.encoded.equal(b.encoded) && a.decoded.equal(b.decoded)
+func (a *Square) equals(b Square) bool {
+	return a.Encoded.equal(b.Encoded) && a.Decoded.equal(b.Decoded)
 }
 
 //func TestSquare_Decode_01(t *testing.T) {
-//	fc := latLonChar{}
+//	fc := LatLonChar{}
 //	fc.setLonChar("J")
 //	fc.setLatChar("N")
-//	sc := latLonChar{}
+//	sc := LatLonChar{}
 //	sc.setLonChar("7")
 //	sc.setLatChar("6")
-//	f := fieldDecode(fc)
-//	s := squareDecode(f, sc)
+//	f := FieldDecode(fc)
+//	s := SquareDecode(f, sc)
 //	fmt.Println(f.String())
 //	fmt.Println("s")
 //	fmt.Println(s.String())
 //	//
 //	//
 //	lld := LatLonDeg{}
-//	lld.Lon = f.decoded.Lon + s.decoded.Lon
-//	lld.Lat = f.decoded.Lat + s.decoded.Lat
+//	lld.Lon = f.Decoded.Lon + s.Decoded.Lon
+//	lld.Lat = f.Decoded.Lat + s.Decoded.Lat
 //
-//	_, sa := squareEncode(lld)
+//	_, sa := SquareEncode(lld)
 //	fmt.Println("sa")
 //	fmt.Println(sa.String())
 //	if s.equals(sa) {
@@ -38,7 +38,7 @@ func (a *square) equals(b square) bool {
 func TestSquare_String(t *testing.T) {
 	type fields struct {
 		decoded LatLonDeg
-		encoded latLonChar
+		encoded LatLonChar
 	}
 	tests := []struct {
 		name   string
@@ -51,7 +51,7 @@ func TestSquare_String(t *testing.T) {
 			want:   "Decoded:{0.000000 0.000000}",
 		},
 		{
-			name: "toString-decoded-zero-2",
+			name: "toString-Decoded-zero-2",
 			fields: fields{
 				decoded: LatLonDeg{
 					Lat: 0,
@@ -67,15 +67,15 @@ func TestSquare_String(t *testing.T) {
 					Lat: 0,
 					Lon: 0,
 				},
-				encoded: latLonChar{
-					latChar: 0,
-					lonChar: 0,
+				encoded: LatLonChar{
+					LatChar: 0,
+					LonChar: 0,
 				},
 			},
 			want: "Decoded:{0.000000 0.000000}",
 		},
 		{
-			name: "toString-decoded-1",
+			name: "toString-Decoded-1",
 			fields: fields{
 				decoded: LatLonDeg{
 					Lat: 1,
@@ -85,7 +85,7 @@ func TestSquare_String(t *testing.T) {
 			want: "Decoded:{1.000000 2.000000}",
 		},
 		{
-			name: "toString-decoded-2",
+			name: "toString-Decoded-2",
 			fields: fields{
 				decoded: LatLonDeg{
 					Lat: 9,
@@ -97,12 +97,12 @@ func TestSquare_String(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			a := &square{
-				decoded: tt.fields.decoded,
-				encoded: tt.fields.encoded,
+			a := &Square{
+				Decoded: tt.fields.decoded,
+				Encoded: tt.fields.encoded,
 			}
 			if got := a.String(); got != tt.want {
-				t.Errorf("square.String() = %v, want %v", got, tt.want)
+				t.Errorf("Square.String() = %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -111,10 +111,10 @@ func TestSquare_String(t *testing.T) {
 func TestSquare_Equals(t *testing.T) {
 	type fields struct {
 		decoded LatLonDeg
-		encoded latLonChar
+		encoded LatLonChar
 	}
 	type args struct {
-		b square
+		b Square
 	}
 	tests := []struct {
 		name   string
@@ -129,20 +129,20 @@ func TestSquare_Equals(t *testing.T) {
 					Lat: 0,
 					Lon: 0,
 				},
-				encoded: latLonChar{
-					latChar: 0,
-					lonChar: 0,
+				encoded: LatLonChar{
+					LatChar: 0,
+					LonChar: 0,
 				},
 			},
 			args: args{
-				b: square{
-					decoded: LatLonDeg{
+				b: Square{
+					Decoded: LatLonDeg{
 						Lat: 0,
 						Lon: 0,
 					},
-					encoded: latLonChar{
-						latChar: 0,
-						lonChar: 0,
+					Encoded: LatLonChar{
+						LatChar: 0,
+						LonChar: 0,
 					},
 				},
 			},
@@ -155,20 +155,20 @@ func TestSquare_Equals(t *testing.T) {
 					Lat: 1,
 					Lon: 2,
 				},
-				encoded: latLonChar{
-					latChar: 48,
-					lonChar: 49,
+				encoded: LatLonChar{
+					LatChar: 48,
+					LonChar: 49,
 				},
 			},
 			args: args{
-				b: square{
-					decoded: LatLonDeg{
+				b: Square{
+					Decoded: LatLonDeg{
 						Lat: 0,
 						Lon: 0,
 					},
-					encoded: latLonChar{
-						latChar: 0,
-						lonChar: 0,
+					Encoded: LatLonChar{
+						LatChar: 0,
+						LonChar: 0,
 					},
 				},
 			},
@@ -181,20 +181,20 @@ func TestSquare_Equals(t *testing.T) {
 					Lat: 1,
 					Lon: 2,
 				},
-				encoded: latLonChar{
-					latChar: 48,
-					lonChar: 49,
+				encoded: LatLonChar{
+					LatChar: 48,
+					LonChar: 49,
 				},
 			},
 			args: args{
-				b: square{
-					decoded: LatLonDeg{
+				b: Square{
+					Decoded: LatLonDeg{
 						Lat: 1,
 						Lon: 2,
 					},
-					encoded: latLonChar{
-						latChar: 0,
-						lonChar: 0,
+					Encoded: LatLonChar{
+						LatChar: 0,
+						LonChar: 0,
 					},
 				},
 			},
@@ -208,20 +208,20 @@ func TestSquare_Equals(t *testing.T) {
 					Lat: 1,
 					Lon: 2,
 				},
-				encoded: latLonChar{
-					latChar: 48,
-					lonChar: 49,
+				encoded: LatLonChar{
+					LatChar: 48,
+					LonChar: 49,
 				},
 			},
 			args: args{
-				b: square{
-					decoded: LatLonDeg{
+				b: Square{
+					Decoded: LatLonDeg{
 						Lat: 1,
 						Lon: 2,
 					},
-					encoded: latLonChar{
-						latChar: 48,
-						lonChar: 49,
+					Encoded: LatLonChar{
+						LatChar: 48,
+						LonChar: 49,
 					},
 				},
 			},
@@ -230,12 +230,12 @@ func TestSquare_Equals(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			a := &square{
-				decoded: tt.fields.decoded,
-				encoded: tt.fields.encoded,
+			a := &Square{
+				Decoded: tt.fields.decoded,
+				Encoded: tt.fields.encoded,
 			}
 			if got := a.equals(tt.args.b); got != tt.want {
-				t.Errorf("square.equals() = %v, want %v", got, tt.want)
+				t.Errorf("Square.equals() = %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -248,8 +248,8 @@ func TestSquareEncode(t *testing.T) {
 	tests := []struct {
 		name  string
 		args  args
-		want  field
-		want1 square
+		want  Field
+		want1 Square
 	}{
 		{
 			name: "encode-JJ00-1",
@@ -259,24 +259,24 @@ func TestSquareEncode(t *testing.T) {
 					Lon: 0,
 				},
 			},
-			want: field{
-				decoded: LatLonDeg{
+			want: Field{
+				Decoded: LatLonDeg{
 					Lat: 0,
 					Lon: 0,
 				},
-				encoded: latLonChar{
-					latChar: 74,
-					lonChar: 74,
+				Encoded: LatLonChar{
+					LatChar: 74,
+					LonChar: 74,
 				},
 			},
-			want1: square{
-				decoded: LatLonDeg{
+			want1: Square{
+				Decoded: LatLonDeg{
 					Lat: 0,
 					Lon: 0,
 				},
-				encoded: latLonChar{
-					latChar: 48,
-					lonChar: 48,
+				Encoded: LatLonChar{
+					LatChar: 48,
+					LonChar: 48,
 				},
 			},
 		},
@@ -289,24 +289,24 @@ func TestSquareEncode(t *testing.T) {
 					Lon: 0.0001,
 				},
 			},
-			want: field{
-				decoded: LatLonDeg{
+			want: Field{
+				Decoded: LatLonDeg{
 					Lat: 0,
 					Lon: 0,
 				},
-				encoded: latLonChar{
-					latChar: 74,
-					lonChar: 74,
+				Encoded: LatLonChar{
+					LatChar: 74,
+					LonChar: 74,
 				},
 			},
-			want1: square{
-				decoded: LatLonDeg{
+			want1: Square{
+				Decoded: LatLonDeg{
 					Lat: 0,
 					Lon: 0,
 				},
-				encoded: latLonChar{
-					latChar: 48,
-					lonChar: 48,
+				Encoded: LatLonChar{
+					LatChar: 48,
+					LonChar: 48,
 				},
 			},
 		},
@@ -319,24 +319,24 @@ func TestSquareEncode(t *testing.T) {
 					Lon: 0.01,
 				},
 			},
-			want: field{
-				decoded: LatLonDeg{
+			want: Field{
+				Decoded: LatLonDeg{
 					Lat: 0,
 					Lon: 0,
 				},
-				encoded: latLonChar{
-					latChar: 74,
-					lonChar: 74,
+				Encoded: LatLonChar{
+					LatChar: 74,
+					LonChar: 74,
 				},
 			},
-			want1: square{
-				decoded: LatLonDeg{
+			want1: Square{
+				Decoded: LatLonDeg{
 					Lat: 0,
 					Lon: 0,
 				},
-				encoded: latLonChar{
-					latChar: 48,
-					lonChar: 48,
+				Encoded: LatLonChar{
+					LatChar: 48,
+					LonChar: 48,
 				},
 			},
 		},
@@ -349,24 +349,24 @@ func TestSquareEncode(t *testing.T) {
 					Lon: 19.99,
 				},
 			},
-			want: field{
-				decoded: LatLonDeg{
+			want: Field{
+				Decoded: LatLonDeg{
 					Lat: 0,
 					Lon: 0,
 				},
-				encoded: latLonChar{
-					latChar: 74,
-					lonChar: 74,
+				Encoded: LatLonChar{
+					LatChar: 74,
+					LonChar: 74,
 				},
 			},
-			want1: square{
-				decoded: LatLonDeg{
+			want1: Square{
+				Decoded: LatLonDeg{
 					Lat: 9,
 					Lon: 18,
 				},
-				encoded: latLonChar{
-					latChar: 57,
-					lonChar: 57,
+				Encoded: LatLonChar{
+					LatChar: 57,
+					LonChar: 57,
 				},
 			},
 		},
@@ -379,24 +379,24 @@ func TestSquareEncode(t *testing.T) {
 					Lon: 20,
 				},
 			},
-			want: field{
-				decoded: LatLonDeg{
+			want: Field{
+				Decoded: LatLonDeg{
 					Lat: 10,
 					Lon: 20,
 				},
-				encoded: latLonChar{
-					latChar: 75,
-					lonChar: 75,
+				Encoded: LatLonChar{
+					LatChar: 75,
+					LonChar: 75,
 				},
 			},
-			want1: square{
-				decoded: LatLonDeg{
+			want1: Square{
+				Decoded: LatLonDeg{
 					Lat: 0,
 					Lon: 0,
 				},
-				encoded: latLonChar{
-					latChar: 48,
-					lonChar: 48,
+				Encoded: LatLonChar{
+					LatChar: 48,
+					LonChar: 48,
 				},
 			},
 		},
@@ -409,24 +409,24 @@ func TestSquareEncode(t *testing.T) {
 					Lon: -180,
 				},
 			},
-			want: field{
-				decoded: LatLonDeg{
+			want: Field{
+				Decoded: LatLonDeg{
 					Lat: -90,
 					Lon: -180,
 				},
-				encoded: latLonChar{
-					latChar: 65,
-					lonChar: 65,
+				Encoded: LatLonChar{
+					LatChar: 65,
+					LonChar: 65,
 				},
 			},
-			want1: square{
-				decoded: LatLonDeg{
+			want1: Square{
+				Decoded: LatLonDeg{
 					Lat: 0,
 					Lon: 0,
 				},
-				encoded: latLonChar{
-					latChar: 48,
-					lonChar: 48,
+				Encoded: LatLonChar{
+					LatChar: 48,
+					LonChar: 48,
 				},
 			},
 		},
@@ -439,24 +439,24 @@ func TestSquareEncode(t *testing.T) {
 					Lon: -179.99,
 				},
 			},
-			want: field{
-				decoded: LatLonDeg{
+			want: Field{
+				Decoded: LatLonDeg{
 					Lat: -90,
 					Lon: -180,
 				},
-				encoded: latLonChar{
-					latChar: 65,
-					lonChar: 65,
+				Encoded: LatLonChar{
+					LatChar: 65,
+					LonChar: 65,
 				},
 			},
-			want1: square{
-				decoded: LatLonDeg{
+			want1: Square{
+				Decoded: LatLonDeg{
 					Lat: 0,
 					Lon: 0,
 				},
-				encoded: latLonChar{
-					latChar: 48,
-					lonChar: 48,
+				Encoded: LatLonChar{
+					LatChar: 48,
+					LonChar: 48,
 				},
 			},
 		},
@@ -469,24 +469,24 @@ func TestSquareEncode(t *testing.T) {
 					Lon: -160.01,
 				},
 			},
-			want: field{
-				decoded: LatLonDeg{
+			want: Field{
+				Decoded: LatLonDeg{
 					Lat: -90,
 					Lon: -180,
 				},
-				encoded: latLonChar{
-					latChar: 65,
-					lonChar: 65,
+				Encoded: LatLonChar{
+					LatChar: 65,
+					LonChar: 65,
 				},
 			},
-			want1: square{
-				decoded: LatLonDeg{
+			want1: Square{
+				Decoded: LatLonDeg{
 					Lat: 9,
 					Lon: 18,
 				},
-				encoded: latLonChar{
-					latChar: 57,
-					lonChar: 57,
+				Encoded: LatLonChar{
+					LatChar: 57,
+					LonChar: 57,
 				},
 			},
 		},
@@ -499,24 +499,24 @@ func TestSquareEncode(t *testing.T) {
 					Lon: -160,
 				},
 			},
-			want: field{
-				decoded: LatLonDeg{
+			want: Field{
+				Decoded: LatLonDeg{
 					Lat: -80,
 					Lon: -160,
 				},
-				encoded: latLonChar{
-					latChar: 66,
-					lonChar: 66,
+				Encoded: LatLonChar{
+					LatChar: 66,
+					LonChar: 66,
 				},
 			},
-			want1: square{
-				decoded: LatLonDeg{
+			want1: Square{
+				Decoded: LatLonDeg{
 					Lat: 0,
 					Lon: 0,
 				},
-				encoded: latLonChar{
-					latChar: 48,
-					lonChar: 48,
+				Encoded: LatLonChar{
+					LatChar: 48,
+					LonChar: 48,
 				},
 			},
 		},
@@ -529,24 +529,24 @@ func TestSquareEncode(t *testing.T) {
 					Lon: 15.3,
 				},
 			},
-			want: field{
-				decoded: LatLonDeg{
+			want: Field{
+				Decoded: LatLonDeg{
 					Lat: 40,
 					Lon: 0,
 				},
-				encoded: latLonChar{
-					latChar: 78,
-					lonChar: 74,
+				Encoded: LatLonChar{
+					LatChar: 78,
+					LonChar: 74,
 				},
 			},
-			want1: square{
-				decoded: LatLonDeg{
+			want1: Square{
+				Decoded: LatLonDeg{
 					Lat: 6,
 					Lon: 14,
 				},
-				encoded: latLonChar{
-					latChar: 54,
-					lonChar: 55,
+				Encoded: LatLonChar{
+					LatChar: 54,
+					LonChar: 55,
 				},
 			},
 		},
@@ -559,24 +559,24 @@ func TestSquareEncode(t *testing.T) {
 					Lon: -73.0232,
 				},
 			},
-			want: field{
-				decoded: LatLonDeg{
+			want: Field{
+				Decoded: LatLonDeg{
 					Lat: 40,
 					Lon: -80,
 				},
-				encoded: latLonChar{
-					latChar: 78,
-					lonChar: 70,
+				Encoded: LatLonChar{
+					LatChar: 78,
+					LonChar: 70,
 				},
 			},
-			want1: square{
-				decoded: LatLonDeg{
+			want1: Square{
+				Decoded: LatLonDeg{
 					Lat: 2,
 					Lon: 6,
 				},
-				encoded: latLonChar{
-					latChar: 50,
-					lonChar: 51,
+				Encoded: LatLonChar{
+					LatChar: 50,
+					LonChar: 51,
 				},
 			},
 		},
@@ -589,24 +589,24 @@ func TestSquareEncode(t *testing.T) {
 					Lon: -48.1268,
 				},
 			},
-			want: field{
-				decoded: LatLonDeg{
+			want: Field{
+				Decoded: LatLonDeg{
 					Lat: -30,
 					Lon: -60,
 				},
-				encoded: latLonChar{
-					latChar: 71,
-					lonChar: 71,
+				Encoded: LatLonChar{
+					LatChar: 71,
+					LonChar: 71,
 				},
 			},
-			want1: square{
-				decoded: LatLonDeg{
+			want1: Square{
+				Decoded: LatLonDeg{
 					Lat: 8,
 					Lon: 10,
 				},
-				encoded: latLonChar{
-					latChar: 56,
-					lonChar: 53,
+				Encoded: LatLonChar{
+					LatChar: 56,
+					LonChar: 53,
 				},
 			},
 		},
@@ -619,36 +619,36 @@ func TestSquareEncode(t *testing.T) {
 					Lon: 176.9583333,
 				},
 			},
-			want: field{
-				decoded: LatLonDeg{
+			want: Field{
+				Decoded: LatLonDeg{
 					Lat: -40,
 					Lon: 160,
 				},
-				encoded: latLonChar{
-					latChar: 70,
-					lonChar: 82,
+				Encoded: LatLonChar{
+					LatChar: 70,
+					LonChar: 82,
 				},
 			},
-			want1: square{
-				decoded: LatLonDeg{
+			want1: Square{
+				Decoded: LatLonDeg{
 					Lat: 0,
 					Lon: 16,
 				},
-				encoded: latLonChar{
-					latChar: 48,
-					lonChar: 56,
+				Encoded: LatLonChar{
+					LatChar: 48,
+					LonChar: 56,
 				},
 			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, got1 := squareEncode(tt.args.lld)
+			got, got1 := SquareEncode(tt.args.lld)
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("FielsEncode() got = %v, want %v", got, tt.want)
 			}
 			if !reflect.DeepEqual(got1, tt.want1) {
-				t.Errorf("squareEncode() got1 = %v, want %v", got1, tt.want1)
+				t.Errorf("SquareEncode() got1 = %v, want %v", got1, tt.want1)
 			}
 		})
 	}
@@ -656,40 +656,40 @@ func TestSquareEncode(t *testing.T) {
 
 func TestSquareDecode(t *testing.T) {
 	type args struct {
-		f         field
-		squareLLC latLonChar
+		f         Field
+		squareLLC LatLonChar
 	}
 	tests := []struct {
 		name string
 		args args
-		want square
+		want Square
 	}{
 		{
 			name: "decode-zero",
 			args: args{
-				f: field{
-					decoded: LatLonDeg{
+				f: Field{
+					Decoded: LatLonDeg{
 						Lat: 0,
 						Lon: 0,
 					},
-					encoded: latLonChar{
-						latChar: 0,
-						lonChar: 0,
+					Encoded: LatLonChar{
+						LatChar: 0,
+						LonChar: 0,
 					},
 				},
-				squareLLC: latLonChar{
-					latChar: 0,
-					lonChar: 0,
+				squareLLC: LatLonChar{
+					LatChar: 0,
+					LonChar: 0,
 				},
 			},
-			want: square{
-				decoded: LatLonDeg{
+			want: Square{
+				Decoded: LatLonDeg{
 					Lat: 0,
 					Lon: 0,
 				},
-				encoded: latLonChar{
-					latChar: 0,
-					lonChar: 0,
+				Encoded: LatLonChar{
+					LatChar: 0,
+					LonChar: 0,
 				},
 			},
 		},
@@ -697,25 +697,25 @@ func TestSquareDecode(t *testing.T) {
 		{
 			name: "decode-JJ00",
 			args: args{
-				f: field{
-					encoded: latLonChar{
-						latChar: 74,
-						lonChar: 74,
+				f: Field{
+					Encoded: LatLonChar{
+						LatChar: 74,
+						LonChar: 74,
 					},
 				},
-				squareLLC: latLonChar{
-					latChar: 48,
-					lonChar: 48,
+				squareLLC: LatLonChar{
+					LatChar: 48,
+					LonChar: 48,
 				},
 			},
-			want: square{
-				decoded: LatLonDeg{
+			want: Square{
+				Decoded: LatLonDeg{
 					Lat: 0,
 					Lon: 0,
 				},
-				encoded: latLonChar{
-					latChar: 48,
-					lonChar: 48,
+				Encoded: LatLonChar{
+					LatChar: 48,
+					LonChar: 48,
 				},
 			},
 		},
@@ -723,25 +723,25 @@ func TestSquareDecode(t *testing.T) {
 		{
 			name: "decode-AA00",
 			args: args{
-				f: field{
-					encoded: latLonChar{
-						latChar: 65,
-						lonChar: 65,
+				f: Field{
+					Encoded: LatLonChar{
+						LatChar: 65,
+						LonChar: 65,
 					},
 				},
-				squareLLC: latLonChar{
-					latChar: 48,
-					lonChar: 48,
+				squareLLC: LatLonChar{
+					LatChar: 48,
+					LonChar: 48,
 				},
 			},
-			want: square{
-				decoded: LatLonDeg{
+			want: Square{
+				Decoded: LatLonDeg{
 					Lat: 0,
 					Lon: 0,
 				},
-				encoded: latLonChar{
-					latChar: 48,
-					lonChar: 48,
+				Encoded: LatLonChar{
+					LatChar: 48,
+					LonChar: 48,
 				},
 			},
 		},
@@ -749,25 +749,25 @@ func TestSquareDecode(t *testing.T) {
 		{
 			name: "decode-JJ99",
 			args: args{
-				f: field{
-					encoded: latLonChar{
-						latChar: 74,
-						lonChar: 74,
+				f: Field{
+					Encoded: LatLonChar{
+						LatChar: 74,
+						LonChar: 74,
 					},
 				},
-				squareLLC: latLonChar{
-					latChar: 57,
-					lonChar: 57,
+				squareLLC: LatLonChar{
+					LatChar: 57,
+					LonChar: 57,
 				},
 			},
-			want: square{
-				decoded: LatLonDeg{
+			want: Square{
+				Decoded: LatLonDeg{
 					Lat: 9,
 					Lon: 18,
 				},
-				encoded: latLonChar{
-					latChar: 57,
-					lonChar: 57,
+				Encoded: LatLonChar{
+					LatChar: 57,
+					LonChar: 57,
 				},
 			},
 		},
@@ -775,25 +775,25 @@ func TestSquareDecode(t *testing.T) {
 		{
 			name: "decode-AA99",
 			args: args{
-				f: field{
-					encoded: latLonChar{
-						latChar: 65,
-						lonChar: 65,
+				f: Field{
+					Encoded: LatLonChar{
+						LatChar: 65,
+						LonChar: 65,
 					},
 				},
-				squareLLC: latLonChar{
-					latChar: 57,
-					lonChar: 57,
+				squareLLC: LatLonChar{
+					LatChar: 57,
+					LonChar: 57,
 				},
 			},
-			want: square{
-				decoded: LatLonDeg{
+			want: Square{
+				Decoded: LatLonDeg{
 					Lat: 9,
 					Lon: 18,
 				},
-				encoded: latLonChar{
-					latChar: 57,
-					lonChar: 57,
+				Encoded: LatLonChar{
+					LatChar: 57,
+					LonChar: 57,
 				},
 			},
 		},
@@ -801,25 +801,25 @@ func TestSquareDecode(t *testing.T) {
 		{
 			name: "decode-S59ABC-JN76TO",
 			args: args{
-				f: field{
-					encoded: latLonChar{
-						latChar: 78,
-						lonChar: 74,
+				f: Field{
+					Encoded: LatLonChar{
+						LatChar: 78,
+						LonChar: 74,
 					},
 				},
-				squareLLC: latLonChar{
-					latChar: 54,
-					lonChar: 55,
+				squareLLC: LatLonChar{
+					LatChar: 54,
+					LonChar: 55,
 				},
 			},
-			want: square{
-				decoded: LatLonDeg{
+			want: Square{
+				Decoded: LatLonDeg{
 					Lat: 6,
 					Lon: 14,
 				},
-				encoded: latLonChar{
-					latChar: 54,
-					lonChar: 55,
+				Encoded: LatLonChar{
+					LatChar: 54,
+					LonChar: 55,
 				},
 			},
 		},
@@ -827,25 +827,25 @@ func TestSquareDecode(t *testing.T) {
 		{
 			name: "decode-K1TTT-FN32LL",
 			args: args{
-				f: field{
-					encoded: latLonChar{
-						latChar: 78, // N
-						lonChar: 70, // F
+				f: Field{
+					Encoded: LatLonChar{
+						LatChar: 78, // N
+						LonChar: 70, // F
 					},
 				},
-				squareLLC: latLonChar{
-					latChar: 50, // 2
-					lonChar: 51, // 3
+				squareLLC: LatLonChar{
+					LatChar: 50, // 2
+					LonChar: 51, // 3
 				},
 			},
-			want: square{
-				decoded: LatLonDeg{
+			want: Square{
+				Decoded: LatLonDeg{
 					Lat: 2,
 					Lon: 6,
 				},
-				encoded: latLonChar{
-					latChar: 50,
-					lonChar: 51,
+				Encoded: LatLonChar{
+					LatChar: 50,
+					LonChar: 51,
 				},
 			},
 		},
@@ -853,25 +853,25 @@ func TestSquareDecode(t *testing.T) {
 		{
 			name: "decode--JN32",
 			args: args{
-				f: field{
-					encoded: latLonChar{
-						latChar: 78, // N
-						lonChar: 74, // J
+				f: Field{
+					Encoded: LatLonChar{
+						LatChar: 78, // N
+						LonChar: 74, // J
 					},
 				},
-				squareLLC: latLonChar{
-					latChar: 50, // 2
-					lonChar: 51, // 3
+				squareLLC: LatLonChar{
+					LatChar: 50, // 2
+					LonChar: 51, // 3
 				},
 			},
-			want: square{
-				decoded: LatLonDeg{
+			want: Square{
+				Decoded: LatLonDeg{
 					Lat: 2,
 					Lon: 6,
 				},
-				encoded: latLonChar{
-					latChar: 50,
-					lonChar: 51,
+				Encoded: LatLonChar{
+					LatChar: 50,
+					LonChar: 51,
 				},
 			},
 		},
@@ -879,25 +879,25 @@ func TestSquareDecode(t *testing.T) {
 		{
 			name: "decode-PS2T-GG58WG",
 			args: args{
-				f: field{
-					encoded: latLonChar{
-						latChar: 71, // G
-						lonChar: 71, // G
+				f: Field{
+					Encoded: LatLonChar{
+						LatChar: 71, // G
+						LonChar: 71, // G
 					},
 				},
-				squareLLC: latLonChar{
-					latChar: 56, // 8
-					lonChar: 53, // 5
+				squareLLC: LatLonChar{
+					LatChar: 56, // 8
+					LonChar: 53, // 5
 				},
 			},
-			want: square{
-				decoded: LatLonDeg{
+			want: Square{
+				Decoded: LatLonDeg{
 					Lat: 8,
 					Lon: 10,
 				},
-				encoded: latLonChar{
-					latChar: 56,
-					lonChar: 53,
+				Encoded: LatLonChar{
+					LatChar: 56,
+					LonChar: 53,
 				},
 			},
 		},
@@ -905,33 +905,33 @@ func TestSquareDecode(t *testing.T) {
 		{
 			name: "decode-ZM4T-RF80LQ",
 			args: args{
-				f: field{
-					encoded: latLonChar{
-						latChar: 70, // F
-						lonChar: 82, // R
+				f: Field{
+					Encoded: LatLonChar{
+						LatChar: 70, // F
+						LonChar: 82, // R
 					},
 				},
-				squareLLC: latLonChar{
-					latChar: 48, // 0
-					lonChar: 56, // 8
+				squareLLC: LatLonChar{
+					LatChar: 48, // 0
+					LonChar: 56, // 8
 				},
 			},
-			want: square{
-				decoded: LatLonDeg{
+			want: Square{
+				Decoded: LatLonDeg{
 					Lat: 0,
 					Lon: 16,
 				},
-				encoded: latLonChar{
-					latChar: 48,
-					lonChar: 56,
+				Encoded: LatLonChar{
+					LatChar: 48,
+					LonChar: 56,
 				},
 			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := squareDecode(tt.args.squareLLC); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("squareDecode() = %v, want %v", got, tt.want)
+			if got := SquareDecode(tt.args.squareLLC); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("SquareDecode() = %v, want %v", got, tt.want)
 			}
 		})
 	}

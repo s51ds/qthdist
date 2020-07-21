@@ -1,4 +1,4 @@
-package geo
+package internal
 
 import (
 	"fmt"
@@ -64,9 +64,9 @@ func (a *LatLonDMS) String() string {
 }
 
 //
-// Maidenhead encoded
-type latLonChar struct {
-	latChar, lonChar byte
+// Maidenhead Encoded
+type LatLonChar struct {
+	LatChar, LonChar byte
 }
 
 func isNumber(b byte) bool {
@@ -92,34 +92,34 @@ func toValidValue(c string) byte {
 	}
 }
 
-func (a *latLonChar) setLatChar(c string) {
-	a.latChar = toValidValue(c)
+func (a *LatLonChar) setLatChar(c string) {
+	a.LatChar = toValidValue(c)
 }
 
-func (a *latLonChar) setLonChar(c string) {
-	a.lonChar = toValidValue(c)
+func (a *LatLonChar) setLonChar(c string) {
+	a.LonChar = toValidValue(c)
 }
 
-func (a *latLonChar) getLatChar() string {
-	return string(a.latChar)
+func (a *LatLonChar) GetLatChar() string {
+	return string(a.LatChar)
 }
 
-func (a *latLonChar) getLonChar() string {
-	return string(a.lonChar)
+func (a *LatLonChar) GetLonChar() string {
+	return string(a.LonChar)
 }
 
-func (a *latLonChar) isSet() bool {
-	return a.latChar > 0 && a.lonChar > 0
+func (a *LatLonChar) isSet() bool {
+	return a.LatChar > 0 && a.LonChar > 0
 }
 
-func (a *latLonChar) String() string {
+func (a *LatLonChar) String() string {
 	if a.isSet() {
-		return fmt.Sprintf("%s%s", a.getLonChar(), a.getLatChar())
+		return fmt.Sprintf("%s%s", a.GetLonChar(), a.GetLatChar())
 	} else {
 		return ""
 	}
 }
 
-func (a *latLonChar) equal(b latLonChar) bool {
+func (a *LatLonChar) equal(b LatLonChar) bool {
 	return a.String() == b.String()
 }

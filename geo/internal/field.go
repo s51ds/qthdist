@@ -1,4 +1,4 @@
-package geo
+package internal
 
 import (
 	"fmt"
@@ -157,31 +157,31 @@ func init() {
 	}
 }
 
-type field struct {
-	// characters {A,B,...R} decoded as
+type Field struct {
+	// characters {A,B,...R} Decoded as
 	// longitude {-180,-160...,160}
 	// latitude {-90,-80...,80)
-	decoded LatLonDeg  //characters decoded as longitude and latitude
-	encoded latLonChar //latitude and longitude encoded as characters
+	Decoded LatLonDeg  //characters Decoded as longitude and latitude
+	Encoded LatLonChar //latitude and longitude Encoded as characters
 }
 
-func (a *field) String() string {
+func (a *Field) String() string {
 	s := ""
-	if a.decoded.String() != "" {
-		s = fmt.Sprintf("Decoded:%s", a.decoded.String())
+	if a.Decoded.String() != "" {
+		s = fmt.Sprintf("Decoded:%s", a.Decoded.String())
 	}
-	if a.encoded.String() != "" {
+	if a.Encoded.String() != "" {
 		if s == "" {
-			s = fmt.Sprintf("Encoded:%s", a.encoded.String())
+			s = fmt.Sprintf("Encoded:%s", a.Encoded.String())
 		} else {
-			s += fmt.Sprintf(" Encoded:%s", a.encoded.String())
+			s += fmt.Sprintf(" Encoded:%s", a.Encoded.String())
 		}
 	}
 	return s
 }
 
-func fieldEncode(lld LatLonDeg) field {
-	a := field{}
+func FieldEncode(lld LatLonDeg) Field {
+	a := Field{}
 
 	iLat, iLon := 0, 0
 	for _, v := range fieldDegLongitudes {
@@ -197,17 +197,17 @@ func fieldEncode(lld LatLonDeg) field {
 		}
 	}
 
-	a.encoded.setLatChar(fieldDigitToLetterLat[iLat])
-	a.encoded.setLonChar(fieldDigitToLetterLon[iLon])
-	a.decoded.Lat = float64(iLat)
-	a.decoded.Lon = float64(iLon)
+	a.Encoded.setLatChar(fieldDigitToLetterLat[iLat])
+	a.Encoded.setLonChar(fieldDigitToLetterLon[iLon])
+	a.Decoded.Lat = float64(iLat)
+	a.Decoded.Lon = float64(iLon)
 	return a
 }
 
-func fieldDecode(llc latLonChar) field {
-	a := field{}
-	a.decoded.Lat = fieldLetterToDigitLat[llc.getLatChar()]
-	a.decoded.Lon = fieldLetterToDigitLon[llc.getLonChar()]
-	a.encoded = llc
+func FieldDecode(llc LatLonChar) Field {
+	a := Field{}
+	a.Decoded.Lat = fieldLetterToDigitLat[llc.GetLatChar()]
+	a.Decoded.Lon = fieldLetterToDigitLon[llc.GetLonChar()]
+	a.Encoded = llc
 	return a
 }
