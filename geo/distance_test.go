@@ -2,6 +2,7 @@ package geo
 
 import (
 	"github.com/golang/geo/s2"
+	"qth/geo/internal"
 	"testing"
 )
 
@@ -76,7 +77,7 @@ func TestDistanceQTH(t *testing.T) {
 			args: args{
 				a: QTH{
 					Loc: "",
-					LatLon: LatLonDeg{
+					LatLon: internal.LatLonDeg{
 						Lat: 0,
 						Lon: 0,
 					},
@@ -87,7 +88,7 @@ func TestDistanceQTH(t *testing.T) {
 				},
 				b: QTH{
 					Loc: "",
-					LatLon: LatLonDeg{
+					LatLon: internal.LatLonDeg{
 						Lat: 0,
 						Lon: 0,
 					},

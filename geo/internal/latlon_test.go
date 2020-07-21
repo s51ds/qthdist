@@ -1,4 +1,4 @@
-package geo
+package internal
 
 import (
 	"fmt"
@@ -35,7 +35,7 @@ func TestLatLon_String(t *testing.T) {
 }
 
 func TestLatLonChar_LatLonChar(t *testing.T) {
-	a := latLonChar{}
+	a := LatLonChar{}
 	a.setLatChar("A")
 	a.setLonChar("B")
 	if a.String() != "BA" {
@@ -66,11 +66,11 @@ func TestLatLonChar_LatLonChar(t *testing.T) {
 }
 
 func TestLatLonChar_Equal(t *testing.T) {
-	a := latLonChar{}
+	a := LatLonChar{}
 	if !a.equal(a) {
 		t.Fatal()
 	}
-	b := latLonChar{}
+	b := LatLonChar{}
 	b.setLatChar("J")
 	b.setLonChar("N")
 	if a.equal(b) {

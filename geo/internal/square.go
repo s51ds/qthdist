@@ -1,6 +1,8 @@
-package geo
+package internal
 
-import "fmt"
+import (
+	"fmt"
+)
 
 var (
 	squareDigitToLetterLat map[int]string
@@ -101,37 +103,37 @@ func init() {
 
 }
 
-type square struct {
-	// characters {0,1,...9} decoded as
+type Square struct {
+	// characters {0,1,...9} Decoded as
 	// longitude {0,2...,18} [degree]
 	// latitude {0,1...,9)   [degree]
-	decoded LatLonDeg  //characters decoded as longitude and latitude
-	encoded latLonChar //latitude and longitude encoded as characters
+	Decoded LatLonDeg  //characters Decoded as longitude and latitude
+	Encoded LatLonChar //latitude and longitude Encoded as characters
 }
 
-func (a *square) String() string {
+func (a *Square) String() string {
 	s := ""
-	if a.decoded.String() != "" {
-		s = fmt.Sprintf("Decoded:%s", a.decoded.String())
+	if a.Decoded.String() != "" {
+		s = fmt.Sprintf("Decoded:%s", a.Decoded.String())
 	}
-	if a.encoded.String() != "" {
+	if a.Encoded.String() != "" {
 		if s == "" {
-			s = fmt.Sprintf("Encoded:%s", a.encoded.String())
+			s = fmt.Sprintf("Encoded:%s", a.Encoded.String())
 		} else {
-			s += fmt.Sprintf(" Encoded:%s", a.encoded.String())
+			s += fmt.Sprintf(" Encoded:%s", a.Encoded.String())
 		}
 	}
 	return s
 }
 
-func squareEncode(lld LatLonDeg) (field, square) {
+func SquareEncode(lld LatLonDeg) (Field, Square) {
 
-	s := square{}
-	f := fieldEncode(lld)
+	s := Square{}
+	f := FieldEncode(lld)
 	iLat, iLon := 0, 0
 
-	fLat := lld.Lat - f.decoded.Lat
-	fLon := lld.Lon - f.decoded.Lon
+	fLat := lld.Lat - f.Decoded.Lat
+	fLon := lld.Lon - f.Decoded.Lon
 
 	for _, v := range squareDegLongitudes {
 		if fLon >= v && fLon < v+2 {
@@ -147,17 +149,17 @@ func squareEncode(lld LatLonDeg) (field, square) {
 		}
 	}
 
-	s.encoded.setLatChar(squareDigitToLetterLat[iLat])
-	s.encoded.setLonChar(squareDigitToLetterLon[iLon])
-	s.decoded.Lat = float64(iLat)
-	s.decoded.Lon = float64(iLon)
+	s.Encoded.setLatChar(squareDigitToLetterLat[iLat])
+	s.Encoded.setLonChar(squareDigitToLetterLon[iLon])
+	s.Decoded.Lat = float64(iLat)
+	s.Decoded.Lon = float64(iLon)
 	return f, s
 }
 
-func squareDecode(llc latLonChar) square {
-	s := square{}
-	s.decoded.Lat = squareLetterToDigitLat[llc.getLatChar()]
-	s.decoded.Lon = squareLetterToDigitLon[llc.getLonChar()]
-	s.encoded = llc
+func SquareDecode(llc LatLonChar) Square {
+	s := Square{}
+	s.Decoded.Lat = squareLetterToDigitLat[llc.GetLatChar()]
+	s.Decoded.Lon = squareLetterToDigitLon[llc.GetLonChar()]
+	s.Encoded = llc
 	return s
 }
