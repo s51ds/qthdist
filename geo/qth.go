@@ -18,6 +18,10 @@ type QTH struct {
 }
 
 // NewQthFromLocator returns QTH for locator
+// locator is case insensitive from 2, 4 or 6 characters; example:
+// - JN
+// - jN76
+// - jn76TO
 func NewQthFromLocator(locator string) (*QTH, error) {
 	locator = strings.ToUpper(locator)
 	qth := QTH{}
@@ -96,7 +100,7 @@ func NewQthFromLocator(locator string) (*QTH, error) {
 	}
 }
 
-// NewQthFromPosition returns QTH for latitude, longitude
+// NewQthFromPosition returns QTH for latitude and longitude in decimal degrees
 func NewQthFromPosition(latitude, longitude float64) (*QTH, error) {
 	lld := internal.LatLonDeg{
 		Lat: latitude,
