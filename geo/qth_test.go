@@ -311,12 +311,12 @@ func TestNewQthFromLOC_01(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := MakeQthFromLOC(tt.args.qthLocator)
+			got, err := NewQthFromLocator(tt.args.qthLocator)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("MakeQthFromLOC() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !qthEqual(got, tt.want) {
+			if !qthEqual(*got, tt.want) {
 				t.Errorf("MakeQthFromLOC() = %s, want %s", got.String(), tt.want.String())
 			}
 		})
@@ -475,14 +475,13 @@ func TestNewQthFromLatLon(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := MakeQthFromLatLon(tt.args.latitude, tt.args.longitude)
+			got, err := NewQthFromPosition(tt.args.latitude, tt.args.longitude)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("MakeQthFromLatLon() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !qthEqual(got, tt.want) {
+			if !qthEqual(*got, tt.want) {
 				t.Errorf("MakeQthFromLOC() = %s, want %s", got.String(), tt.want.String())
-				//				t.Errorf("MakeQthFromLatLon() = %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -519,12 +518,12 @@ func TestNewQthFromLOC(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := MakeQthFromLOC(tt.args.qthLocator)
+			got, err := NewQthFromLocator(tt.args.qthLocator)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("MakeQthFromLOC() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !qthEqual(got, tt.want) {
+			if !qthEqual(*got, tt.want) {
 				t.Errorf("MakeQthFromLOC() = %s, want %s", got.String(), tt.want.String())
 				//				t.Errorf("MakeQthFromLOC() = %v, want %v", got, tt.want)
 			}
