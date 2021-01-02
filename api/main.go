@@ -14,10 +14,10 @@ import (
 //http://localhost:8080/qth?jn76to
 //
 // next links return distance, azimuth, QTH-1 and QTH-2
-//http://localhost:8080/qth?jn76to;jn76PO
-//http://localhost:8080/qth?lat=46.604&lon=15.625;lat=46.604&lon=15.291
-//http://localhost:8080/qth?jn76to&lon=15.625;lat=46.604&lon=15.291
-//http://localhost:8080/qth?lat=46.604&lon=15.625;jn76PO
+// http://localhost:8080/qth?jn76to;jn76PO
+// http://localhost:8080/qth?lat=46.604&lon=15.625;lat=46.604&lon=15.291
+// http://localhost:8080/qth?jn76to;lat=46.604&lon=15.291
+// http://localhost:8080/qth?lat=46.604&lon=15.625;jn76PO
 
 func main() {
 	http.HandleFunc("/qth", api)
