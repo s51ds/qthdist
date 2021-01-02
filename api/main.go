@@ -20,7 +20,7 @@ import (
 // http://localhost:8080/qth?lat=46.604&lon=15.625;jn76PO
 
 func main() {
-	http.HandleFunc("/qth", api)
+	http.HandleFunc("/qth", qth)
 
 	addr := "127.0.0.1:8080"
 	fmt.Println("Server listen on", addr)
