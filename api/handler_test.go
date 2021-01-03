@@ -2,7 +2,6 @@ package main
 
 import "testing"
 
-// // lat=46.604&lon=15.625
 func Test_parseReqLatLon(t *testing.T) {
 	type args struct {
 		rawRequest string
