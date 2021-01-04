@@ -1,10 +1,4 @@
-package main
-
-import (
-	"fmt"
-	"os"
-	"qth/server"
-)
+package server
 
 // next links return QTH
 //http://localhost:8080/qth?lat=46.604&lon=15.625 (qtQthPosition)
@@ -15,13 +9,3 @@ import (
 // http://localhost:8080/qth?lat=46.604&lon=15.625;lat=46.604&lon=15.291 (qtDistPosition)
 // http://localhost:8080/qth?jn76to;lat=46.604&lon=15.291 (qtDistLocatorPosition)
 // http://localhost:8080/qth?lat=46.604&lon=15.625;jn76PO (qtDistPositionLocator)
-
-func main() {
-	addr := "127.0.0.1:8080"
-	err := server.Http(addr)
-	if err != nil {
-		fmt.Println(err.Error())
-		os.Exit(2)
-	}
-
-}
