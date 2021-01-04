@@ -149,56 +149,45 @@ func qth(writer http.ResponseWriter, request *http.Request) {
 	switch queryType(query) {
 	case qtQthPosition: //?lat=46.604&lon=15.625
 		{
-			if lat, lon, err := parseReqLatLon(query); err != nil {
-				s := err.Error() + " " + query
-				fmt.Println(s)
-				fmt.Fprintf(writer, s)
+			lat, lon, err := parseReqLatLon(query)
+			if isError(&query, err, writer) {
 				return
-			} else {
-				if qth, err := geo.NewQthFromPosition(lat, lon); err != nil {
-					fmt.Println(err.Error())
-					fmt.Fprintf(writer, err.Error())
-					return
-				} else {
-					apiResp := ApiResp{
-						LocA: qth.Loc,
-						LatA: lat,
-						LonA: lon,
-					}
-					json.NewEncoder(writer).Encode(apiResp)
-					return
-				}
 			}
+			qth, err := geo.NewQthFromPosition(lat, lon)
+			if isError(&query, err, writer) {
+				return
+			}
+			apiResp := ApiResp{
+				LocA: qth.Loc,
+				LatA: lat,
+				LonA: lon,
+			}
+			json.NewEncoder(writer).Encode(apiResp)
+			return
 		}
 	case qtQthLocator: // ?jn76to
 		{
-			if qth, err := geo.NewQthFromLocator(query); err != nil {
-				fmt.Println(err.Error())
-				fmt.Fprintf(writer, err.Error())
-				return
-			} else {
-				apiResp := ApiResp{
-					LocA: query,
-					LatA: qth.LatLon.Lat,
-					LonA: qth.LatLon.Lon,
-				}
-				json.NewEncoder(writer).Encode(apiResp)
+			qth, err := geo.NewQthFromLocator(query)
+			if isError(&query, err, writer) {
 				return
 			}
+			apiResp := ApiResp{
+				LocA: query,
+				LatA: qth.LatLon.Lat,
+				LonA: qth.LatLon.Lon,
+			}
+			json.NewEncoder(writer).Encode(apiResp)
+			return
 		}
 	case qtDistLocator: // ?jn76to;jn76PO
 		{
 			ss := strings.Split(query, ";")
 			qthA, err := geo.NewQthFromLocator(ss[0])
-			if err != nil {
-				fmt.Println(err.Error())
-				fmt.Fprintf(writer, err.Error())
+			if isError(&query, err, writer) {
 				return
 			}
 			qthB, err := geo.NewQthFromLocator(ss[1])
-			if err != nil {
-				fmt.Println(err.Error())
-				fmt.Fprintf(writer, err.Error())
+			if isError(&query, err, writer) {
 				return
 			}
 			dist, azim := qthA.DistanceAndAzimuth(qthB)
@@ -222,30 +211,20 @@ func qth(writer http.ResponseWriter, request *http.Request) {
 
 			// QTH A
 			lat0, lon0, err := parseReqLatLon(ss[0])
-			if err != nil {
-				s := err.Error() + " " + query
-				fmt.Println(s)
-				fmt.Fprintf(writer, s)
+			if isError(&query, err, writer) {
 				return
 			}
 			qthA, err := geo.NewQthFromPosition(lat0, lon0)
-			if err != nil {
-				fmt.Println(err.Error())
-				fmt.Fprintf(writer, err.Error())
+			if isError(&query, err, writer) {
 				return
 			}
 			// QTH B
 			lat1, lon1, err := parseReqLatLon(ss[1])
-			if err != nil {
-				s := err.Error() + " " + query
-				fmt.Println(s)
-				fmt.Fprintf(writer, s)
+			if isError(&query, err, writer) {
 				return
 			}
 			qthB, err := geo.NewQthFromPosition(lat1, lon1)
-			if err != nil {
-				fmt.Println(err.Error())
-				fmt.Fprintf(writer, err.Error())
+			if isError(&query, err, writer) {
 				return
 			}
 
@@ -270,24 +249,17 @@ func qth(writer http.ResponseWriter, request *http.Request) {
 
 			// QTH A
 			qthA, err := geo.NewQthFromLocator(ss[0])
-			if err != nil {
-				fmt.Println(err.Error())
-				fmt.Fprintf(writer, err.Error())
+			if isError(&query, err, writer) {
 				return
 			}
 
 			// QTH B
 			lat1, lon1, err := parseReqLatLon(ss[1])
-			if err != nil {
-				s := err.Error() + " " + query
-				fmt.Println(s)
-				fmt.Fprintf(writer, s)
+			if isError(&query, err, writer) {
 				return
 			}
 			qthB, err := geo.NewQthFromPosition(lat1, lon1)
-			if err != nil {
-				fmt.Println(err.Error())
-				fmt.Fprintf(writer, err.Error())
+			if isError(&query, err, writer) {
 				return
 			}
 
@@ -312,24 +284,17 @@ func qth(writer http.ResponseWriter, request *http.Request) {
 
 			// QTH A
 			lat0, lon0, err := parseReqLatLon(ss[0])
-			if err != nil {
-				s := err.Error() + " " + query
-				fmt.Println(s)
-				fmt.Fprintf(writer, s)
+			if isError(&query, err, writer) {
 				return
 			}
 			qthA, err := geo.NewQthFromPosition(lat0, lon0)
-			if err != nil {
-				fmt.Println(err.Error())
-				fmt.Fprintf(writer, err.Error())
+			if isError(&query, err, writer) {
 				return
 			}
 
 			// QTH B
 			qthB, err := geo.NewQthFromLocator(ss[1])
-			if err != nil {
-				fmt.Println(err.Error())
-				fmt.Fprintf(writer, err.Error())
+			if isError(&query, err, writer) {
 				return
 			}
 
@@ -355,6 +320,16 @@ func qth(writer http.ResponseWriter, request *http.Request) {
 
 	}
 
+}
+
+func isError(query *string, err error, writer http.ResponseWriter) bool {
+	if err != nil {
+		s := err.Error() + " " + *query
+		fmt.Println(s)
+		fmt.Fprintf(writer, s)
+		return true
+	}
+	return false
 }
 
 type ApiResp struct {
