@@ -101,6 +101,26 @@ const (
 	qtDistPositionLocator    // http://localhost:8080/qth?lat=46.604&lon=15.625;jn76PO
 )
 
+func (q *qt) String() string {
+	switch *q {
+	case qtUnsupported:
+		return "qtUnsupported"
+	case qtQthPosition:
+		return "qtQthPosition"
+	case qtQthLocator:
+		return "qtQthLocator"
+	case qtDistLocator:
+		return "qtDistLocator"
+	case qtDistPosition:
+		return "qtDistPosition"
+	case qtDistLocatorPosition:
+		return "qtDistLocatorPosition"
+	case qtDistPositionLocator:
+		return "qtDistPositionLocator"
+	}
+	return "qt-WTF"
+}
+
 func queryType(query string) qt {
 
 	if strings.Contains(query, ";") {
@@ -150,11 +170,11 @@ func qth(writer http.ResponseWriter, request *http.Request) {
 	case qtQthPosition: //?lat=46.604&lon=15.625
 		{
 			lat, lon, err := parseReqLatLon(query)
-			if isError(&query, err, writer) {
+			if isError(qtQthPosition, &query, err, writer) {
 				return
 			}
 			qth, err := geo.NewQthFromPosition(lat, lon)
-			if isError(&query, err, writer) {
+			if isError(qtQthPosition, &query, err, writer) {
 				return
 			}
 			apiResp := ApiResp{
@@ -168,7 +188,7 @@ func qth(writer http.ResponseWriter, request *http.Request) {
 	case qtQthLocator: // ?jn76to
 		{
 			qth, err := geo.NewQthFromLocator(query)
-			if isError(&query, err, writer) {
+			if isError(qtQthLocator, &query, err, writer) {
 				return
 			}
 			apiResp := ApiResp{
@@ -183,11 +203,11 @@ func qth(writer http.ResponseWriter, request *http.Request) {
 		{
 			ss := strings.Split(query, ";")
 			qthA, err := geo.NewQthFromLocator(ss[0])
-			if isError(&query, err, writer) {
+			if isError(qtDistLocator, &query, err, writer) {
 				return
 			}
 			qthB, err := geo.NewQthFromLocator(ss[1])
-			if isError(&query, err, writer) {
+			if isError(qtDistLocator, &query, err, writer) {
 				return
 			}
 			dist, azim := qthA.DistanceAndAzimuth(qthB)
@@ -211,20 +231,20 @@ func qth(writer http.ResponseWriter, request *http.Request) {
 
 			// QTH A
 			lat0, lon0, err := parseReqLatLon(ss[0])
-			if isError(&query, err, writer) {
+			if isError(qtDistPosition, &query, err, writer) {
 				return
 			}
 			qthA, err := geo.NewQthFromPosition(lat0, lon0)
-			if isError(&query, err, writer) {
+			if isError(qtDistPosition, &query, err, writer) {
 				return
 			}
 			// QTH B
 			lat1, lon1, err := parseReqLatLon(ss[1])
-			if isError(&query, err, writer) {
+			if isError(qtDistPosition, &query, err, writer) {
 				return
 			}
 			qthB, err := geo.NewQthFromPosition(lat1, lon1)
-			if isError(&query, err, writer) {
+			if isError(qtDistPosition, &query, err, writer) {
 				return
 			}
 
@@ -249,17 +269,17 @@ func qth(writer http.ResponseWriter, request *http.Request) {
 
 			// QTH A
 			qthA, err := geo.NewQthFromLocator(ss[0])
-			if isError(&query, err, writer) {
+			if isError(qtDistLocatorPosition, &query, err, writer) {
 				return
 			}
 
 			// QTH B
 			lat1, lon1, err := parseReqLatLon(ss[1])
-			if isError(&query, err, writer) {
+			if isError(qtDistLocatorPosition, &query, err, writer) {
 				return
 			}
 			qthB, err := geo.NewQthFromPosition(lat1, lon1)
-			if isError(&query, err, writer) {
+			if isError(qtDistLocatorPosition, &query, err, writer) {
 				return
 			}
 
@@ -284,17 +304,17 @@ func qth(writer http.ResponseWriter, request *http.Request) {
 
 			// QTH A
 			lat0, lon0, err := parseReqLatLon(ss[0])
-			if isError(&query, err, writer) {
+			if isError(qtDistPositionLocator, &query, err, writer) {
 				return
 			}
 			qthA, err := geo.NewQthFromPosition(lat0, lon0)
-			if isError(&query, err, writer) {
+			if isError(qtDistPositionLocator, &query, err, writer) {
 				return
 			}
 
 			// QTH B
 			qthB, err := geo.NewQthFromLocator(ss[1])
-			if isError(&query, err, writer) {
+			if isError(qtDistPositionLocator, &query, err, writer) {
 				return
 			}
 
@@ -322,9 +342,9 @@ func qth(writer http.ResponseWriter, request *http.Request) {
 
 }
 
-func isError(query *string, err error, writer http.ResponseWriter) bool {
+func isError(queryType qt, query *string, err error, writer http.ResponseWriter) bool {
 	if err != nil {
-		s := err.Error() + " " + *query
+		s := err.Error() + " " + *query + " (queryType:" + queryType.String() + ")"
 		fmt.Println(s)
 		fmt.Fprintf(writer, s)
 		return true
