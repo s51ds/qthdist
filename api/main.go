@@ -182,7 +182,7 @@ func qth(writer http.ResponseWriter, request *http.Request) {
 				LatA: lat,
 				LonA: lon,
 			}
-			json.NewEncoder(writer).Encode(apiResp)
+			_ = json.NewEncoder(writer).Encode(apiResp)
 			return
 		}
 	case qtQthLocator: // ?jn76to
@@ -196,7 +196,7 @@ func qth(writer http.ResponseWriter, request *http.Request) {
 				LatA: qth.LatLon.Lat,
 				LonA: qth.LatLon.Lon,
 			}
-			json.NewEncoder(writer).Encode(apiResp)
+			_ = json.NewEncoder(writer).Encode(apiResp)
 			return
 		}
 	case qtDistLocator: // ?jn76to;jn76PO
@@ -221,7 +221,7 @@ func qth(writer http.ResponseWriter, request *http.Request) {
 				Distance: dist,
 				Azimuth:  azim,
 			}
-			json.NewEncoder(writer).Encode(apiResp)
+			_ = json.NewEncoder(writer).Encode(apiResp)
 			return
 		}
 	case qtDistPosition: // ?lat=46.604&lon=15.625;lat=46.604&lon=15.291
@@ -259,7 +259,7 @@ func qth(writer http.ResponseWriter, request *http.Request) {
 				Distance: dist,
 				Azimuth:  azim,
 			}
-			json.NewEncoder(writer).Encode(apiResp)
+			_ = json.NewEncoder(writer).Encode(apiResp)
 			return
 		}
 	case qtDistLocatorPosition:
@@ -294,7 +294,7 @@ func qth(writer http.ResponseWriter, request *http.Request) {
 				Distance: dist,
 				Azimuth:  azim,
 			}
-			json.NewEncoder(writer).Encode(apiResp)
+			_ = json.NewEncoder(writer).Encode(apiResp)
 			return
 		}
 	case qtDistPositionLocator:
@@ -329,13 +329,13 @@ func qth(writer http.ResponseWriter, request *http.Request) {
 				Distance: dist,
 				Azimuth:  azim,
 			}
-			json.NewEncoder(writer).Encode(apiResp)
+			_ = json.NewEncoder(writer).Encode(apiResp)
 			return
 
 		}
 
 	default:
-		fmt.Fprintf(writer, "unsupported query %s", query)
+		_, _ = fmt.Fprintf(writer, "unsupported query %s", query)
 		return
 
 	}
@@ -346,7 +346,7 @@ func isError(queryType qt, query *string, err error, writer http.ResponseWriter)
 	if err != nil {
 		s := err.Error() + " " + *query + " (queryType:" + queryType.String() + ")"
 		fmt.Println(s)
-		fmt.Fprintf(writer, s)
+		_, _ = fmt.Fprintf(writer, s)
 		return true
 	}
 	return false
