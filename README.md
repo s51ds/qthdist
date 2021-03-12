@@ -10,6 +10,6 @@
 - NewQthFromPosition
 
 ## Restfull API
-### Distance and azimuth calculation can be the Network Function "out of the box"
+### Distance and azimuth calculation and qth/lat-lon conversion can be the Network Function "out of the box"
 see: ./qth/api/main.go
 

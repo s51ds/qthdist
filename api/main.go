@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
+	"gitlab.com/s51ds/qth/server"
 	"os"
-	"qth/server"
 )
 
 // next links return QTH

@@ -3,7 +3,7 @@ package geo
 import (
 	"fmt"
 	"github.com/golang/geo/s2"
-	"qth/geo/internal"
+	"gitlab.com/s51ds/qth/geo/internal"
 	"testing"
 )
 
