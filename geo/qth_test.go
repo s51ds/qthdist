@@ -1,8 +1,8 @@
 package geo
 
 import (
+	"gitlab.com/s51ds/qth/geo/internal"
 	"math"
-	"qth/geo/internal"
 	"testing"
 
 	"github.com/golang/geo/s2"

@@ -1,4 +1,4 @@
-module qth
+module gitlab.com/s51ds/qth
 
 go 1.13
 

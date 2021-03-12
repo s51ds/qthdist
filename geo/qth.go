@@ -3,8 +3,8 @@ package geo
 import (
 	"fmt"
 	"github.com/golang/geo/s2"
+	"gitlab.com/s51ds/qth/geo/internal"
 	"math"
-	"qth/geo/internal"
 	"regexp"
 	"strings"
 )
