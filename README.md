@@ -1,4 +1,4 @@
-## QTH project provides functionality for distance and azimuth calculation between two positions on the Earth.
+## qthdist project provides functionality for distance and azimuth calculation between two positions on the Earth.
 
 
 ### Positions can be provided in two froms:

@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"gitlab.com/s51ds/qth/server"
+	"github.com/s51ds/qthdist/server"
 	"os"
 )
 

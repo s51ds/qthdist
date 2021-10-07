@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"gitlab.com/s51ds/qth/geo"
+	"github.com/s51ds/qthdist/geo"
 	"net/http"
 	"strconv"
 	"strings"
