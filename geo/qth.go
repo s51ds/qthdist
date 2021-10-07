@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-// QTH represents Maidenhead QTH Locator and associated pair of latitude and longitude
+// QTH represents Maidenhead QTH Locator and associated a pair of latitude and longitude
 // Use function NewQthFromLocator or NewQthFromPosition to create QTH
 type QTH struct {
 	Loc    string             // Maidenhead QTH Locator
@@ -17,8 +17,7 @@ type QTH struct {
 	LatLng s2.LatLng          // LatLng represents a point on the unit sphere as a pair of angles.
 }
 
-// NewQthFromLocator returns QTH for locator
-// locator is case insensitive from 2, 4 or 6 characters; example:
+// NewQthFromLocator returns QTH for locator. Locator is case-insensitive 2, 4 or 6 characters; example:
 // - JN
 // - jN76
 // - jn76TO

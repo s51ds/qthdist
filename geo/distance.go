@@ -30,7 +30,7 @@ func (a *QTH) Distance(b *QTH) float64 {
 	return d.Radians() * earthRadiusKm
 }
 
-// Distance returns distance in km and azimuth in decimal degrees from a to b
+// DistanceAndAzimuth returns distance in km and azimuth in decimal degrees from a to b
 func (a *QTH) DistanceAndAzimuth(b *QTH) (dist, azimuth float64) {
 	d := a.LatLng.Distance(b.LatLng)
 	return d.Radians() * earthRadiusKm, a.AzimuthTo(b)
