@@ -11,5 +11,5 @@
 
 ## Restfull API
 ### Distance and azimuth calculation and qth/lat-lon conversion can be the Network Function "out of the box"
-see: ./qth/api/main.go
+see: ./qth/cli/webserver.go
 
