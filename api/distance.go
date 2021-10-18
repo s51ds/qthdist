@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/s51ds/qthdist/geo"
+	"strings"
 	"sync"
 )
 
@@ -17,7 +18,12 @@ var (
 	distCacheMux sync.RWMutex
 )
 
+// Distance returns distance in km and azimuth in decimal degrees between locatorA and
+// locatorB or error if input is invalid. Input is not case-sensitive.
 func Distance(locatorA, locatorB string) (distance, azimuth float64, err error) {
+	locatorA = strings.ToUpper(locatorA)
+	locatorB = strings.ToUpper(locatorB)
+
 	var (
 		qthA, qthB   geo.QTH
 		hasCachedQth bool
