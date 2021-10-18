@@ -22,6 +22,7 @@ type QTH struct {
 // - jN76
 // - jn76TO
 func NewQthFromLocator(locator string) (*QTH, error) {
+	// TODO: maybe pointer to QTH is not good idea
 	locator = strings.ToUpper(locator)
 	qth := QTH{}
 	switch len(locator) {
