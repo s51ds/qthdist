@@ -21,7 +21,7 @@ type QTH struct {
 // - JN
 // - jN76
 // - jn76TO
-func NewQthFromLocator(locator string) (*QTH, error) {
+func NewQthFromLocator(locator string) (QTH, error) {
 	// TODO: maybe pointer to QTH is not good idea
 	locator = strings.ToUpper(locator)
 	qth := QTH{}
@@ -43,13 +43,13 @@ func NewQthFromLocator(locator string) (*QTH, error) {
 				})
 				lat := f.Decoded.Lat + s.Decoded.Lat + ss.Decoded.Lat/60 + 0.02083333 // 1.25' / 60
 				lon := f.Decoded.Lon + s.Decoded.Lon + ss.Decoded.Lon/60 + 0.04166667 // 2.5' / 60
-				return &QTH{
+				return QTH{
 					Loc:    locator,
 					LatLon: internal.LatLonDeg{Lat: lat, Lon: lon},
 					LatLng: s2.LatLngFromDegrees(lat, lon),
 				}, nil
 			} else {
-				return &qth, internal.IllegalLocatorError(locator)
+				return qth, internal.IllegalLocatorError(locator)
 			}
 		}
 	case 4:
@@ -65,13 +65,13 @@ func NewQthFromLocator(locator string) (*QTH, error) {
 				})
 				lat := f.Decoded.Lat + s.Decoded.Lat + 0.5
 				lon := f.Decoded.Lon + s.Decoded.Lon + 1
-				return &QTH{
+				return QTH{
 					Loc:    locator,
 					LatLon: internal.LatLonDeg{Lat: lat, Lon: lon},
 					LatLng: s2.LatLngFromDegrees(lat, lon),
 				}, nil
 			} else {
-				return &qth, internal.IllegalLocatorError(locator)
+				return qth, internal.IllegalLocatorError(locator)
 			}
 		}
 	case 2:
@@ -84,39 +84,39 @@ func NewQthFromLocator(locator string) (*QTH, error) {
 				lat := f.Decoded.Lat + 5
 				lon := f.Decoded.Lon + 10
 
-				return &QTH{
+				return QTH{
 					Loc:    locator,
 					LatLon: internal.LatLonDeg{Lat: lat, Lon: lon},
 					LatLng: s2.LatLngFromDegrees(lat, lon),
 				}, nil
 
 			} else {
-				return &qth, internal.IllegalLocatorError(locator)
+				return qth, internal.IllegalLocatorError(locator)
 			}
 		}
 
 	default:
-		return &qth, internal.IllegalLocatorError(locator)
+		return qth, internal.IllegalLocatorError(locator)
 	}
 }
 
 // NewQthFromPosition returns QTH for latitude and longitude in decimal degrees
-func NewQthFromPosition(latitude, longitude float64) (*QTH, error) {
+func NewQthFromPosition(latitude, longitude float64) (QTH, error) {
 	lld := internal.LatLonDeg{
 		Lat: latitude,
 		Lon: longitude,
 	}
 	if math.Abs(latitude) > 90 || math.Abs(longitude) > 180 {
-		return &QTH{}, internal.IllegalLocatorError(lld.String())
+		return QTH{}, internal.IllegalLocatorError(lld.String())
 	}
 	f, s, ss := internal.SubsquareEncode(lld)
-	return &QTH{
+	return QTH{
 		Loc:    f.Encoded.GetLonChar() + f.Encoded.GetLatChar() + s.Encoded.GetLonChar() + s.Encoded.GetLatChar() + ss.Encoded.GetLonChar() + ss.Encoded.GetLatChar(),
 		LatLon: lld,
 		LatLng: s2.LatLngFromDegrees(latitude, longitude),
 	}, nil
 }
 
-func (a *QTH) String() string {
+func (a QTH) String() string {
 	return fmt.Sprintf("[ %s %s {%.6f %.6f} ]", a.Loc, a.LatLon.String(), a.LatLng.Lat.Radians(), a.LatLng.Lng.Radians())
 }

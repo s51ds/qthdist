@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func (a *Field) equals(b Field) bool {
+func (a Field) equals(b Field) bool {
 	return a.Encoded.equal(b.Encoded) && a.Decoded.equal(b.Decoded)
 }
 

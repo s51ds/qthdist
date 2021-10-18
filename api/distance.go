@@ -4,7 +4,7 @@ import "github.com/s51ds/qthdist/geo"
 
 func Distance(locatorA, locatorB string) (distance, azimuth float64, err error) {
 
-	var qthA, qthB *geo.QTH
+	var qthA, qthB geo.QTH
 	qthA, err = geo.NewQthFromLocator(locatorA)
 	if err != nil {
 		return

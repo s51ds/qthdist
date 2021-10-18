@@ -7,21 +7,20 @@ import (
 	"strings"
 )
 
-//
-// Decimal degrees
+// LatLonDeg represents Decimal degrees
 type LatLonDeg struct {
 	Lat, Lon float64
 }
 
-func (a *LatLonDeg) String() string {
+func (a LatLonDeg) String() string {
 	return fmt.Sprintf("{%.6f %.6f}", a.Lat, a.Lon)
 }
 
-func (a *LatLonDeg) equal(b LatLonDeg) bool {
+func (a LatLonDeg) equal(b LatLonDeg) bool {
 	return a.String() == b.String()
 }
 
-func (a *LatLonDeg) ToLatLonDMS() LatLonDMS {
+func (a LatLonDeg) ToLatLonDMS() LatLonDMS {
 	dms := LatLonDMS{}
 
 	intLatDeg, fracLatDeg := math.Modf(a.Lat)
@@ -51,7 +50,7 @@ type dms struct {
 	seconds int
 }
 
-func (a *dms) String() string {
+func (a dms) String() string {
 	return fmt.Sprintf(`%.f°%d'%d"`, a.degrees, a.minutes, a.seconds)
 }
 
@@ -59,7 +58,7 @@ type LatLonDMS struct {
 	latDMS, lonDMS dms
 }
 
-func (a *LatLonDMS) String() string {
+func (a LatLonDMS) String() string {
 	return fmt.Sprintf("Lat=%s, Lon=%s", a.latDMS.String(), a.lonDMS.String())
 }
 

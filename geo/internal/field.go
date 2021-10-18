@@ -165,7 +165,7 @@ type Field struct {
 	Encoded LatLonChar //latitude and longitude Encoded as characters
 }
 
-func (a *Field) String() string {
+func (a Field) String() string {
 	s := ""
 	if a.Decoded.String() != "" {
 		s = fmt.Sprintf("Decoded:%s", a.Decoded.String())

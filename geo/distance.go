@@ -25,13 +25,13 @@ func LocatorDistance(locatorA string, locatorB string) (float64, error) {
 }
 
 // Distance returns distance between a and b in km
-func (a *QTH) Distance(b *QTH) float64 {
+func (a QTH) Distance(b QTH) float64 {
 	d := a.LatLng.Distance(b.LatLng)
 	return d.Radians() * earthRadiusKm
 }
 
 // DistanceAndAzimuth returns distance in km and azimuth in decimal degrees from a to b
-func (a *QTH) DistanceAndAzimuth(b *QTH) (dist, azimuth float64) {
+func (a QTH) DistanceAndAzimuth(b QTH) (dist, azimuth float64) {
 	d := a.LatLng.Distance(b.LatLng)
 	return d.Radians() * earthRadiusKm, a.AzimuthTo(b)
 }
@@ -42,7 +42,7 @@ const (
 
 // AzimuthTo Calculates forward azimuth in decimal degrees from a to b
 // Original Implementation from: http://www.movable-type.co.uk/scripts/latlong.html
-func (a *QTH) AzimuthTo(b *QTH) float64 {
+func (a QTH) AzimuthTo(b QTH) float64 {
 
 	diffInLongitude := (b.LatLng.Lng - a.LatLng.Lng).Radians()
 

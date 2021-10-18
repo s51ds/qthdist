@@ -65,8 +65,8 @@ func TestDistanceQTH(t *testing.T) {
 	aa00aa, _ := NewQthFromLocator("AA00AA")
 
 	type args struct {
-		a *QTH
-		b *QTH
+		a QTH
+		b QTH
 	}
 	tests := []struct {
 		name string
@@ -77,7 +77,7 @@ func TestDistanceQTH(t *testing.T) {
 		{
 			name: "zero qth",
 			args: args{
-				a: &QTH{
+				a: QTH{
 					Loc: "",
 					LatLon: internal.LatLonDeg{
 						Lat: 0,
@@ -88,7 +88,7 @@ func TestDistanceQTH(t *testing.T) {
 						Lng: 0,
 					},
 				},
-				b: &QTH{
+				b: QTH{
 					Loc: "",
 					LatLon: internal.LatLonDeg{
 						Lat: 0,
@@ -133,8 +133,8 @@ func TestQTH_Distance(t *testing.T) {
 
 	tests := []struct {
 		name string
-		a    *QTH
-		b    *QTH
+		a    QTH
+		b    QTH
 		want float64
 	}{
 		{
@@ -190,8 +190,8 @@ func TestQTH_AzimuthTo(t *testing.T) {
 
 	tests := []struct {
 		name string
-		a    *QTH
-		b    *QTH
+		a    QTH
+		b    QTH
 		want float64
 	}{
 		{

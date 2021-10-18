@@ -316,7 +316,7 @@ func TestNewQthFromLOC_01(t *testing.T) {
 				t.Errorf("MakeQthFromLOC() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !qthEqual(*got, tt.want) {
+			if !qthEqual(got, tt.want) {
 				t.Errorf("MakeQthFromLOC() = %s, want %s", got.String(), tt.want.String())
 			}
 		})
@@ -480,7 +480,7 @@ func TestNewQthFromLatLon(t *testing.T) {
 				t.Errorf("MakeQthFromLatLon() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !qthEqual(*got, tt.want) {
+			if !qthEqual(got, tt.want) {
 				t.Errorf("MakeQthFromLOC() = %s, want %s", got.String(), tt.want.String())
 			}
 		})
@@ -523,9 +523,8 @@ func TestNewQthFromLOC(t *testing.T) {
 				t.Errorf("MakeQthFromLOC() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !qthEqual(*got, tt.want) {
+			if !qthEqual(got, tt.want) {
 				t.Errorf("MakeQthFromLOC() = %s, want %s", got.String(), tt.want.String())
-				//				t.Errorf("MakeQthFromLOC() = %v, want %v", got, tt.want)
 			}
 		})
 	}

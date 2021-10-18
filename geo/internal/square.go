@@ -111,7 +111,7 @@ type Square struct {
 	Encoded LatLonChar //latitude and longitude Encoded as characters
 }
 
-func (a *Square) String() string {
+func (a Square) String() string {
 	s := ""
 	if a.Decoded.String() != "" {
 		s = fmt.Sprintf("Decoded:%s", a.Decoded.String())
