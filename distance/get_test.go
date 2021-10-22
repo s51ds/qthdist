@@ -1,4 +1,4 @@
-package api
+package distance
 
 import "testing"
 
@@ -120,16 +120,16 @@ func TestDistance(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotDistance, gotAzimuth, err := Distance(tt.args.locatorA, tt.args.locatorB)
+			gotDistance, gotAzimuth, err := Get(tt.args.locatorA, tt.args.locatorB)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("Distance() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("Get() error = %v, wantErr %v", err, tt.wantErr)
 				//				return
 			}
 			if gotDistance != tt.wantDistance {
-				t.Errorf("Distance() gotDistance = %v, want %v", gotDistance, tt.wantDistance)
+				t.Errorf("Get() gotDistance = %v, want %v", gotDistance, tt.wantDistance)
 			}
 			if gotAzimuth != tt.wantAzimuth {
-				t.Errorf("Distance() gotAzimuth = %v, want %v", gotAzimuth, tt.wantAzimuth)
+				t.Errorf("Get() gotAzimuth = %v, want %v", gotAzimuth, tt.wantAzimuth)
 			}
 		})
 	}
