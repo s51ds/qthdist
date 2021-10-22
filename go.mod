@@ -1,4 +1,4 @@
-module github.com/s51ds/qthdist
+module github.com/s51ds/qthgeo
 
 go 1.16
 

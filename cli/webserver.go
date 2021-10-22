@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/s51ds/qthdist/server"
+	"github.com/s51ds/qthgeo/server"
 	"os"
 )
 

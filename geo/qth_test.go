@@ -1,7 +1,7 @@
 package geo
 
 import (
-	"github.com/s51ds/qthdist/geo/internal"
+	"github.com/s51ds/qthgeo/geo/internal"
 	"math"
 	"testing"
 

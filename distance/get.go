@@ -1,7 +1,7 @@
 package distance
 
 import (
-	"github.com/s51ds/qthdist/geo"
+	"github.com/s51ds/qthgeo/geo"
 	"strings"
 	"sync"
 )
